@@ -7,9 +7,9 @@ export class Search extends Component {
     searchQuery: ''
   }
 
-  onInputChange = (event) => {
+  onInputChange = ({ target: { value } }) => {
     this.setState({
-      searchQuery: event.target.value
+      searchQuery: value
     });
   }
 

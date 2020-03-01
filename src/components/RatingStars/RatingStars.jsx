@@ -1,31 +1,31 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import styles from './RatingStars.module.scss';
 
-export class RatingStars extends Component {
-  render() {
-    const {
-      id,
-      stars,
-      onStarsChange
-    } = this.props;
-    const result = [];
+export const RatingStars = (props) => {
+  const {
+    id,
+    stars,
+    onStarsChange
+  } = props;
 
-    for (let i = 1; i <= 5; i++) {
-      result.push(
-        <span key={i}
-          className={i <= stars ?
-            `fa fa-star ${styles.star}` :
-            `fa fa-star-o ${styles.star}`}
-          onClick={() => onStarsChange(id, i, 'stars')}>
-        </span>
-      );
-    }
+  const MAX_STARS = 5;
+  const result = [];
 
-    return (
-      <div className={styles.starsContainer}>
-        {result}
-      </div>
+  for (let i = 1; i <= MAX_STARS; i++) {
+    result.push(
+      <span key={i}
+        className={i <= stars ?
+          `fa fa-star ${styles.star}` :
+          `fa fa-star-o ${styles.star}`}
+        onClick={() => onStarsChange(id, i, 'stars')}>
+      </span>
     );
   }
+
+  return (
+    <div className={styles.starsContainer}>
+      {result}
+    </div>
+  );
 }
