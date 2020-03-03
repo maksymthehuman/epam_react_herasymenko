@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userRegister } from '../actions';
 import { Routes } from '../../../constants';
+import { AuthorizationMessages } from '../constants';
 
 import styles from './Register.module.scss';
 
-class Register extends Component {
+class RegisterRoot extends Component {
   state = {
     warningMessage: '',
   };
@@ -33,7 +34,7 @@ class Register extends Component {
 
     if (this.isUserExist(users, userName.value)) {
       this.setState({
-        warningMessage: 'This username is already taken'
+        warningMessage: AuthorizationMessages.BUSYLOGIN
       });
     } else {
       users.push(userData);
@@ -93,4 +94,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withConnect(Register);
+export const Register = withConnect(RegisterRoot);

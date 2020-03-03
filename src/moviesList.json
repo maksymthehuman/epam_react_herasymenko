@@ -2,7 +2,7 @@
   "movies": [
     {
       "id": 1,
-      "title": "The Shawshank Redemptoin",
+      "title": "The Shawshank Redemption",
       "posterUrl": "https://s1.vcdn.biz/static/f/240297031/image.jpg/pt/r300x423x4",
       "stars": 2,
       "likes": 22,
@@ -33,12 +33,12 @@
         4,
         5
       ],
-      "director": "фывфывыфв",
+      "director": "Francis Ford Coppola",
       "description": "When the aging head of a famous crime family decides to transfer his position to one of his subalterns, a series of unfortunate events start happening to the family, and a war begins between all the well-known families leading to insolence, deportation, murder and revenge, and ends with the favorable successor being finally chosen"
     },
     {
       "id": 3,
-      "title": "234234234",
+      "title": "The Godfather: Part II",
       "posterUrl": "https://s5.vcdn.biz/static/f/541378661/image.jpg/pt/r300x423x4",
       "stars": 4,
       "likes": 15,

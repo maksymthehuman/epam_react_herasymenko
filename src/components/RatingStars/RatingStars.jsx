@@ -5,7 +5,7 @@ import { starsChange } from '../../features/homePage/actions';
 
 import styles from './RatingStars.module.scss';
 
-const RatingStars = (props) => {
+const RatingStarsRoot = (props) => {
   const {
     id,
     stars,
@@ -13,10 +13,10 @@ const RatingStars = (props) => {
   } = props;
 
   const MAX_STARS = 5;
-  const result = [];
+  const starsTemplate = [];
 
   for (let i = 1; i <= MAX_STARS; i++) {
-    result.push(
+    starsTemplate.push(
       <span key={i}
         className={i <= stars ?
           `fa fa-star ${styles.star}` :
@@ -28,7 +28,7 @@ const RatingStars = (props) => {
 
   return (
     <div className={styles.starsContainer}>
-      {result}
+      {starsTemplate}
     </div>
   );
 };
@@ -47,9 +47,9 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withConnect(RatingStars);
+export const RatingStars = withConnect(RatingStarsRoot);
 
-RatingStars.propTypes = {
+RatingStarsRoot.propTypes = {
   id: PropTypes.number.isRequired,
   stars: PropTypes.number.isRequired,
   onStarsChange: PropTypes.func.isRequired,

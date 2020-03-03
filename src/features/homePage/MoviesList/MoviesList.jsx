@@ -6,7 +6,7 @@ import { movieShortInfo } from '../../../propTypes';
 
 import styles from './MoviesList.module.scss';
 
-const MoviesList = (props) => {
+const MoviesListRoot = (props) => {
   const { sortedMovies } = props;
 
   return (
@@ -34,9 +34,9 @@ const withConnect = connect(
   null,
 );
 
-export default withConnect(MoviesList);
+export const MoviesList = withConnect(MoviesListRoot);
 
-MoviesList.propTypes = {
+MoviesListRoot.propTypes = {
   sortedMovies: PropTypes.arrayOf(
     PropTypes.shape({
       ...movieShortInfo,

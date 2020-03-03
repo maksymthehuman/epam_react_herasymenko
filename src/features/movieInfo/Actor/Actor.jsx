@@ -1,11 +1,11 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import { Routes } from '../../../constants'
+import { Routes } from '../../../constants';
 
 import styles from './Actor.module.scss';
 
-const Actor = (props) => {
+const ActorRoot = (props) => {
   const { id, name } = props;
 
   return (
@@ -17,4 +17,12 @@ const Actor = (props) => {
   );
 };
 
-export default withRouter(Actor);
+export const Actor = withRouter(ActorRoot);
+
+ActorRoot.propTypes = {
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
+};

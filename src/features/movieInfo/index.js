@@ -1,1 +1,1 @@
-export { default as MovieInfo } from './MovieInfo';
+export { MovieInfo } from './MovieInfo';

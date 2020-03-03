@@ -1,16 +1,10 @@
 import {
-  MOVIE_SELECTED,
   MOVIE_UPDATED,
   MOVIE_EDITED,
   MOVIE_DELETED,
   MOVIES_SEARCH,
   MOVIES_SORT,
 } from './types';
-
-export const titleClick = (movieId) => ({
-  type: MOVIE_SELECTED,
-  payload: movieId,
-});
 
 export const likesChange = (id, value, property) => ({
   type: MOVIE_UPDATED,

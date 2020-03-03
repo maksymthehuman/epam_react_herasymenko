@@ -1,5 +1,4 @@
 import {
-  MOVIE_SELECTED,
   MOVIE_UPDATED,
   MOVIE_EDITED,
   MOVIE_DELETED,
@@ -10,7 +9,6 @@ import {
 const initialState = {
   initialMovies: null,
   sortedMovies: null,
-  // currentMovieId: 0,
   searchQuery: '',
   sortType: 'default',
   sortedByAscend: true,
@@ -111,7 +109,6 @@ const updateMoviesLists = (state, payload) => {
   };
 };
 
-// improve naming
 const removeMovieFromList = (list, movieIndex) => {
   return [
     ...list.slice(0, movieIndex),
@@ -119,7 +116,6 @@ const removeMovieFromList = (list, movieIndex) => {
   ];
 };
 
-// improve naming
 const deleteMovie = (state, id) => {
   const { initialMovies, sortedMovies } = state;
 
@@ -150,14 +146,11 @@ const saveEditedMovie = (state, movie) => {
     initialMovies: updateMoviesList(initialMovies, newMovie, initialMovieIndex),
     sortedMovies: updateMoviesList(sortedMovies, newMovie, sortedMovieIndex),
   };
-}
+};
 
 export const moviesReducer = (state = initialState, action) => {
 
   switch (action.type) {
-
-    case MOVIE_SELECTED:
-      return { ...state, currentMovieId: action.payload };
 
     case MOVIE_UPDATED:
       return updateMoviesLists(state, action.payload);

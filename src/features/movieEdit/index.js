@@ -1,1 +1,1 @@
-export { default as MovieEdit } from './MovieEdit';
+export { MovieEdit } from './MovieEdit';

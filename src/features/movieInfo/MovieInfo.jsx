@@ -86,13 +86,15 @@ const noMovie = (
   </div>
 );
 
-const MovieInfo = (props) => {
+const MovieInfoRoot = (props) => {
   const {
     sortedMovies,
     actors,
   } = props;
 
-  const currentMovie = sortedMovies.find((movie) => movie.id === +props.match.params.id);
+  const { id } = props.match.params;
+
+  const currentMovie = sortedMovies.find((movie) => movie.id === +id);
 
   return (
     <div className={styles.container}>
@@ -115,14 +117,14 @@ const withConnect = connect(
   null,
 );
 
-export default withConnect(MovieInfo);
+export const MovieInfo = withConnect(MovieInfoRoot);
 
 movieDetails.propTypes = {
   ...movieShortInfo,
   ...movieAdirionalInfo,
 };
 
-MovieInfo.propTypes = {
+MovieInfoRoot.propTypes = {
   sortedMovies: PropTypes.arrayOf(
     PropTypes.shape({
       ...movieShortInfo,
@@ -137,4 +139,9 @@ MovieInfo.propTypes = {
       biography: PropTypes.string.isRequired,
     }),
   ),
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+  }),
 };

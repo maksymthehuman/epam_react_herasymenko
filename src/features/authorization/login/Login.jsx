@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userLogin } from '../actions';
 import { Routes } from '../../../constants';
+import { AuthorizationMessages } from '../constants';
 
 import styles from './Login.module.scss';
 
-class Login extends Component {
+class LoginRoot extends Component {
   state = {
     warningMessage: '',
   };
@@ -25,12 +26,12 @@ class Login extends Component {
         this.props.history.push(Routes.HOMEPAGE);
       } else {
         this.setState({
-          warningMessage: 'Check whether the password is correct'
+          warningMessage: AuthorizationMessages.WRONGPASSWORD
         });
       }
     } else {
       this.setState({
-        warningMessage: 'User with this login does not exist'
+        warningMessage: AuthorizationMessages.NONEXISTENTLOGIN
       });
     }
   }
@@ -83,4 +84,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withConnect(Login);
+export const Login = withConnect(LoginRoot);

@@ -1,1 +1,1 @@
-export { default as Actor } from './Actor';
+export { Actor } from './Actor';

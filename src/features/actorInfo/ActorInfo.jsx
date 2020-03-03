@@ -1,5 +1,5 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Header } from '../../components/Header';
@@ -38,10 +38,11 @@ const noActor = (
   </div>
 );
 
-const ActorInfo = (props) => {
+const ActorInfoRoot = (props) => {
   const { actors } = props;
+  const { id } = props.match.params;
 
-  const currentActor = actors.find((actor) => actor.id === +props.match.params.id);
+  const currentActor = actors.find((actor) => actor.id === +id);
 
   return (
     <div className={styles.container}>
@@ -63,4 +64,19 @@ const withConnect = connect(
   null,
 );
 
-export default withConnect(withRouter(ActorInfo));
+export const ActorInfo = withConnect(withRouter(ActorInfoRoot));
+
+actorDetails.propTypes = {
+  name: PropTypes.string.isRequired,
+  imgUrl: PropTypes.string.isRequired,
+  biography: PropTypes.string.isRequired,
+};
+
+ActorInfoRoot.propTypes = {
+  actors: PropTypes.array.isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string.isRequired,
+    }),
+  }),
+};

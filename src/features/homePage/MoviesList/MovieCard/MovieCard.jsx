@@ -10,7 +10,7 @@ import { likesChange } from '../../actions';
 
 import styles from './MovieCard.module.scss';
 
-const MovieCard = (props) => {
+const MovieCardRoot = (props) => {
   const {
     id,
     title,
@@ -67,9 +67,9 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(withConnect(MovieCard));
+export const MovieCard = withRouter(withConnect(MovieCardRoot));
 
-MovieCard.propTypes = {
+MovieCardRoot.propTypes = {
   ...movieShortInfo,
   onTitleClick: PropTypes.func,
   onLikesChange: PropTypes.func.isRequired,

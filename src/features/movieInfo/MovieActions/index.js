@@ -1,1 +1,1 @@
-export { default as MovieActions } from './MovieActions';
+export { MovieActions } from './MovieActions';

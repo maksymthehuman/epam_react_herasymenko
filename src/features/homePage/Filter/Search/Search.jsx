@@ -4,7 +4,7 @@ import { searchMovies } from '../../actions';
 
 import styles from './Search.module.scss';
 
-class Search extends Component {
+class SearchRoot extends Component {
   state = {
     searchQuery: ''
   }
@@ -58,4 +58,4 @@ const withConnect = connect(
   mapDispatchToProps
 );
 
-export default withConnect(Search);
+export const Search = withConnect(SearchRoot);

@@ -1,15 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom'
-import { Routes } from '../../../constants'
-import { movieDeleted } from '../../homePage/actions'
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Routes } from '../../../constants';
+import { movieDeleted } from '../../homePage/actions';
 
 import styles from './MovieActions.module.scss';
 
-export const MovieActions = (props) => {
+const MovieActionsRoot = (props) => {
   const {
     id,
-    onDelete
+    onDelete,
   } = props;
 
   const handleDelete = () => {
@@ -35,11 +36,19 @@ export const MovieActions = (props) => {
 
 const mapDispatchToProps = {
   onDelete: movieDeleted,
-}
+};
 
 const withConnect = connect(
   null,
   mapDispatchToProps,
 );
 
-export default withRouter(withConnect(MovieActions));
+export const MovieActions = withRouter(withConnect(MovieActionsRoot));
+
+MovieActionsRoot.propTypes = {
+  id: PropTypes.number,
+  onDelete: PropTypes.func,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
+};

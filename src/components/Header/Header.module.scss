@@ -1,14 +1,35 @@
 .container {
+  box-sizing: border-box;
   width: 100%;
-  padding-top: 20px;
+  padding: 20px;
 }
 
-.logoutContainer {
-  text-align: right;
+.mainNavigation {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navigationItem {
+  color: #000;
+  text-decoration: none;
+  transition: color 0.3s;
+
+  &:hover {
+    color: #4fc3f7;
+  }
+
+  &:active {
+    color: #b3e5fc;
+  }
+}
+
+.navigationItemActive {
+  color: #039be5;
 }
 
 .logout {
-  margin-right: 20px;
+  padding: 5px 15px;
+  cursor: pointer;
 }
 
 .title {

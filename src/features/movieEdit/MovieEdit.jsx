@@ -1,17 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { Routes } from '../../constants'
+import PropTypes from 'prop-types';
+import { Routes } from '../../constants';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
 import { movieEdited } from '../homePage/actions';
+import { movieShortInfo } from '../../propTypes';
 
 import styles from './MovieEdit.module.scss';
 
-const MovieEdit = (props) => {
+const MovieEditRoot = (props) => {
   const {
     sortedMovies,
-    onEdit
+    onEdit,
   } = props;
 
   const currentMovieId = +props.match.params.id;
@@ -112,6 +114,7 @@ const MovieEdit = (props) => {
             </button>
             <button
               className={styles.actionButton}
+              type="button"
               onClick={() => props.history.push(`${Routes.MOVIEINFO}/${currentMovieId}`)}>
               Go back
             </button>
@@ -136,4 +139,21 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withRouter(withConnect(MovieEdit));
+export const MovieEdit = withRouter(withConnect(MovieEditRoot));
+
+MovieEditRoot.propTypes = {
+  sortedMovies: PropTypes.arrayOf(
+    PropTypes.shape({
+      ...movieShortInfo,
+    }),
+  ),
+  onEdit: PropTypes.func,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      id: PropTypes.string,
+    }),
+  }),
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
+};

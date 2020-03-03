@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { sortMovies } from '../../actions';
+import { SortTypes } from './constants';
 
 import styles from './Sort.module.scss';
 
@@ -13,27 +14,27 @@ const setIconClass = (currentSortType, direction, sortType) => {
   return 'fa fa-minus';
 };
 
-const Sort = (props) => {
+const SortRoot = (props) => {
   const {
     onSortMovies,
     sortType,
     sortedByAscend,
   } = props;
 
-  const sortLikesIconClass = setIconClass(sortType, sortedByAscend, 'likes');
-  const sortStarsIconClass = setIconClass(sortType, sortedByAscend, 'stars');
+  const sortLikesIconClass = setIconClass(sortType, sortedByAscend, SortTypes.LIKES);
+  const sortStarsIconClass = setIconClass(sortType, sortedByAscend, SortTypes.STARS);
 
   return (
     <div className={styles.filter}>
       <button
         className={styles.sortButton}
-        onClick={() => onSortMovies('likes')}>
+        onClick={() => onSortMovies(SortTypes.LIKES)}>
         By likes
       <span className={`${sortLikesIconClass} ${styles.sortIcon}`}></span>
       </button>
       <button
         className={styles.sortButton}
-        onClick={() => onSortMovies('stars')}>
+        onClick={() => onSortMovies(SortTypes.STARS)}>
         By rating
       <span className={`${sortStarsIconClass} ${styles.sortIcon}`}></span>
       </button>
@@ -58,9 +59,9 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export default withConnect(Sort);
+export const Sort = withConnect(SortRoot);
 
-Sort.propTypes = {
+SortRoot.propTypes = {
   onSortMovies: PropTypes.func.isRequired,
   sortType: PropTypes.string.isRequired,
   sortedByAscend: PropTypes.bool.isRequired,
