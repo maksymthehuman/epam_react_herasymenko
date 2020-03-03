@@ -1,0 +1,19 @@
+.starsContainer {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.star {
+  color: #ffb74d;
+  margin: 0 2px;
+  cursor: pointer;
+  transition: color 0.3s;
+
+  &:hover {
+    color: #ff8f00;
+  }
+
+  &:active {
+    color: #ffe082;
+  }
+}

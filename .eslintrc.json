@@ -1,0 +1,71 @@
+{
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "no-console": [
+      "error",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ],
+    "dot-notation": "error",
+    "dot-location": [
+      "error",
+      "property"
+    ],
+    "eqeqeq": "error",
+    "no-multi-spaces": "error",
+    "no-undefined": "error",
+    "comma-dangle": [
+      "error",
+      "always-multiline"
+    ],
+    "no-multiple-empty-lines": [
+      "error",
+      {
+        "max": 1,
+        "maxEOF": 1
+      }
+    ],
+    "no-trailing-spaces": "error",
+    "semi": "error",
+    "semi-style": "error",
+    "arrow-parens": "error",
+    "arrow-spacing": "error",
+    "no-confusing-arrow": [
+      "error",
+      {
+        "allowParens": true
+      }
+    ],
+    "no-duplicate-imports": "error",
+    "no-useless-computed-key": "error",
+    "no-var": "error",
+    "object-shorthand": "error",
+    "prefer-arrow-callback": "error",
+    "prefer-const": "error"
+  }
+}

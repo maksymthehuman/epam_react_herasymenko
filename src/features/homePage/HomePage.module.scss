@@ -1,0 +1,23 @@
+.container {
+  box-sizing: border-box;
+  max-width: 1440px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: "Roboto", sans-serif;
+  margin: 0 auto;
+}
+
+.content {
+  flex: 1 0 auto;
+}
+
+.contentContainer {
+  display: flex;
+  justify-content: center;
+  margin: 0 20px;
+}
+
+.mainContent {
+  width: 60%;
+}
