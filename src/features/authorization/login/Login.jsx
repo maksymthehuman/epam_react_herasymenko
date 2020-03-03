@@ -16,7 +16,7 @@ class Login extends Component {
 
     const { onLogin } = this.props;
     const { userName, password } = event.target;
-    const users = JSON.parse(localStorage.getItem('users'));
+    const users = JSON.parse(localStorage.getItem('users')) || [];
     const userData = users.find((user) => user.login === userName.value);
 
     if (userData) {

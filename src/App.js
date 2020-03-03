@@ -21,7 +21,8 @@ const stateToStore = {
     sortedByAscend: true,
   },
   userReducer: {
-    isLoggedIn: false,
+    // change to false
+    isLoggedIn: true,
   },
 };
 
@@ -33,20 +34,23 @@ function App() {
       <BrowserRouter>
 
         {/* navigation goes to header */}
-        {/* <ul>
+        <ul>
           <li>
             <Link to={Routes.HOMEPAGE}>home</Link>
           </li>
           <li>
-            <Link to={Routes.MOVIEINFO}>info</Link>
+            <Link to={`${Routes.MOVIEINFO}/1`}>info</Link>
           </li>
           <li>
-            <Link to={Routes.ACTORINFO}>actor</Link>
+            <Link to={`${Routes.ACTORINFO}/1`}>actor</Link>
+          </li>
+          <li>
+            <Link to={`${Routes.MOVIEEDIT}/1`}>edit movie</Link>
           </li>
           <li>
             <Link to={Routes.LOGIN}>login</Link>
           </li>
-        </ul> */}
+        </ul>
         <AppRoutes />
 
       </BrowserRouter>
