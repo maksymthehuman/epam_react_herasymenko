@@ -1,33 +1,67 @@
 import React from 'react';
 import { connect } from 'react-redux';
-
 import { withRouter } from 'react-router-dom';
-
+import { Routes } from '../../constants'
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
+import { movieEdited } from '../homePage/actions';
 
 import styles from './MovieEdit.module.scss';
 
 const MovieEdit = (props) => {
-  const { sortedMovies } = props;
+  const {
+    sortedMovies,
+    onEdit
+  } = props;
 
-  const currentMovie = sortedMovies.find((movie) => movie.id === +props.match.params.id);
-  console.log(currentMovie);
+  const currentMovieId = +props.match.params.id;
+
+  const currentMovie = sortedMovies.find((movie) => movie.id === currentMovieId);
   const { title, posterUrl, description, director } = currentMovie;
   const genres = currentMovie.genres.join(', ');
+
+  const submitEditedMovie = (event) => {
+    event.preventDefault();
+
+    const {
+      movieTitle,
+      moviePoster,
+      movieDirector,
+      movieGenres,
+      movieDescription,
+    } = event.target;
+
+    const formattedGenres = movieGenres.value.split(', ');
+
+    const newMovieData = {
+      id: currentMovieId,
+      title: movieTitle.value,
+      posterUrl: moviePoster.value,
+      director: movieDirector.value,
+      genres: formattedGenres,
+      description: movieDescription.value,
+    };
+
+    onEdit(newMovieData);
+    props.history.push(`${Routes.MOVIEINFO}/${currentMovieId}`);
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.content}>
         <Header title="Movies" />
-        <form className={styles.movieEdit}>
+        <form
+          className={styles.movieEdit}
+          onSubmit={submitEditedMovie}>
           <div className={styles.inputGroup}>
             <label className={styles.description} htmlFor="movieTitle">Title</label>
             <input
               className={styles.inputField}
               type="text"
               id="movieTitle"
-              defaultValue={title} />
+              name="movieTitle"
+              defaultValue={title}
+              required />
           </div>
           <div className={styles.inputGroup}>
             <label className={styles.description} htmlFor="moviePoster">Image URL</label>
@@ -35,7 +69,9 @@ const MovieEdit = (props) => {
               className={styles.inputField}
               type="text"
               id="moviePoster"
-              defaultValue={posterUrl} />
+              name="moviePoster"
+              defaultValue={posterUrl}
+              required />
           </div>
           <div className={styles.inputGroup}>
             <label className={styles.description} htmlFor="movieDirector">Director</label>
@@ -43,7 +79,9 @@ const MovieEdit = (props) => {
               className={styles.inputField}
               type="text"
               id="movieDirector"
-              defaultValue={director} />
+              name="movieDirector"
+              defaultValue={director}
+              required />
           </div>
           <div className={styles.inputGroup}>
             <label className={styles.description} htmlFor="movieGenres">Genres</label>
@@ -51,21 +89,30 @@ const MovieEdit = (props) => {
               className={styles.inputField}
               type="text"
               id="movieGenres"
-              defaultValue={genres} />
+              name="movieGenres"
+              title="Enter movie genres separated by comma and space: ', '"
+              defaultValue={genres}
+              required />
           </div>
           <div className={styles.inputGroup}>
             <label className={styles.description} htmlFor="movieDescription">Description</label>
             <textarea
               className={styles.inputFieldLarge}
               id="movieDescription"
-              defaultValue={description}>
+              name="movieDescription"
+              defaultValue={description}
+              required>
             </textarea>
           </div>
           <div className={styles.submitContainer}>
-            <button className={styles.actionButton}>
+            <button
+              className={styles.actionButton}
+              type="submit">
               Submit
             </button>
-            <button className={styles.actionButton}>
+            <button
+              className={styles.actionButton}
+              onClick={() => props.history.push(`${Routes.MOVIEINFO}/${currentMovieId}`)}>
               Go back
             </button>
           </div>
@@ -80,13 +127,13 @@ const mapStateToProps = (state) => ({
   sortedMovies: state.moviesReducer.sortedMovies,
 });
 
-// const mapDispatchToProps = {
-//   onEdit: 
-// }
+const mapDispatchToProps = {
+  onEdit: movieEdited,
+};
 
 const withConnect = connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 );
 
 export default withRouter(withConnect(MovieEdit));

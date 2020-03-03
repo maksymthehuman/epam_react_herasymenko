@@ -25,12 +25,12 @@ class Login extends Component {
         this.props.history.push(Routes.HOMEPAGE);
       } else {
         this.setState({
-          warningMessage: 'wrong password'
+          warningMessage: 'Check whether the password is correct'
         });
       }
     } else {
       this.setState({
-        warningMessage: 'there is no such login'
+        warningMessage: 'User with this login does not exist'
       });
     }
   }

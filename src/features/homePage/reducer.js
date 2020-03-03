@@ -1,6 +1,7 @@
 import {
   MOVIE_SELECTED,
   MOVIE_UPDATED,
+  MOVIE_EDITED,
   MOVIE_DELETED,
   MOVIES_SEARCH,
   MOVIES_SORT,
@@ -132,6 +133,25 @@ const deleteMovie = (state, id) => {
   };
 };
 
+const saveEditedMovie = (state, movie) => {
+  const { initialMovies, sortedMovies } = state;
+  const { id } = movie;
+
+  const initialMovieIndex = initialMovies.findIndex((movie) => movie.id === id);
+  const sortedMovieIndex = sortedMovies.findIndex((movie) => movie.id === id);
+
+  const newMovie = {
+    ...initialMovies[initialMovieIndex],
+    ...movie,
+  };
+
+  return {
+    ...state,
+    initialMovies: updateMoviesList(initialMovies, newMovie, initialMovieIndex),
+    sortedMovies: updateMoviesList(sortedMovies, newMovie, sortedMovieIndex),
+  };
+}
+
 export const moviesReducer = (state = initialState, action) => {
 
   switch (action.type) {
@@ -141,6 +161,9 @@ export const moviesReducer = (state = initialState, action) => {
 
     case MOVIE_UPDATED:
       return updateMoviesLists(state, action.payload);
+
+    case MOVIE_EDITED:
+      return saveEditedMovie(state, action.payload);
 
     case MOVIE_DELETED:
       return deleteMovie(state, action.payload);

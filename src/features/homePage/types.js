@@ -1,5 +1,6 @@
 export const MOVIE_SELECTED = 'MOVIE_SELECTED';
 export const MOVIE_UPDATED = 'MOVIE_UPDATED';
+export const MOVIE_EDITED = 'MOVIE_EDITED';
 export const MOVIE_DELETED = 'MOVIE_DELETED';
 export const MOVIES_SEARCH = 'MOVIES_SEARCH';
 export const MOVIES_SORT = 'MOVIES_SORT';

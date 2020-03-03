@@ -20,7 +20,8 @@ export const MovieActions = (props) => {
   return (
     <div className={styles.movieActions}>
       <button
-        className={styles.movieAction}>
+        className={styles.movieAction}
+        onClick={() => props.history.push(`${Routes.MOVIEEDIT}/${id}`)}>
         EDIT
       </button>
       <button

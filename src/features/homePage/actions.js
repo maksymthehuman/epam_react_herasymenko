@@ -1,7 +1,7 @@
 import {
   MOVIE_SELECTED,
   MOVIE_UPDATED,
-  // MOVIE_EDITED,
+  MOVIE_EDITED,
   MOVIE_DELETED,
   MOVIES_SEARCH,
   MOVIES_SORT,
@@ -21,10 +21,10 @@ export const likesChange = (id, value, property) => ({
   },
 });
 
-// export const movieEdited = (editedMovie) => ({
-//   type: MOVIE_EDITED,
-//   payload: editedMovie,
-// });
+export const movieEdited = (editedMovieData) => ({
+  type: MOVIE_EDITED,
+  payload: editedMovieData,
+});
 
 export const movieDeleted = (id) => ({
   type: MOVIE_DELETED,

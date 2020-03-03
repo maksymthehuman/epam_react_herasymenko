@@ -22,7 +22,7 @@ const stateToStore = {
   },
   userReducer: {
     // change to false
-    isLoggedIn: true,
+    isLoggedIn: false,
   },
 };
 
@@ -34,7 +34,8 @@ function App() {
       <BrowserRouter>
 
         {/* navigation goes to header */}
-        <ul>
+
+        {/* <ul>
           <li>
             <Link to={Routes.HOMEPAGE}>home</Link>
           </li>
@@ -50,7 +51,8 @@ function App() {
           <li>
             <Link to={Routes.LOGIN}>login</Link>
           </li>
-        </ul>
+        </ul> */}
+
         <AppRoutes />
 
       </BrowserRouter>

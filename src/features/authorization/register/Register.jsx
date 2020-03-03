@@ -33,7 +33,7 @@ class Register extends Component {
 
     if (this.isUserExist(users, userName.value)) {
       this.setState({
-        warningMessage: 'user already exist'
+        warningMessage: 'This username is already taken'
       });
     } else {
       users.push(userData);
