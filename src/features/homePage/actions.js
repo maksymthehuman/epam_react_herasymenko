@@ -1,45 +1,70 @@
 import {
+  MOVIE_RESET,
   MOVIE_UPDATED,
-  MOVIE_EDITED,
-  MOVIE_DELETED,
-  MOVIES_SEARCH,
-  MOVIES_SORT,
+  MOVIE_LOADED,
+  MOVIES_LOADED,
+  MOVIES_RESET,
+  ALL_MOVIES_RESET,
+  CURRENT_MOVIES_UPDATED,
 } from './types';
 
-export const likesChange = (id, value, property) => ({
+export const currentMovieReset = () => ({
+  type: MOVIE_RESET,
+});
+
+const moviesLoaded = (payload) => ({
+  type: MOVIES_LOADED,
+  payload,
+});
+
+const currentMovieLoaded = (payload) => ({
+  type: MOVIE_LOADED,
+  payload,
+});
+
+export const moviesResetToDefault = () => ({
+  type: MOVIES_RESET,
+});
+
+export const allMoviesReset = () => ({
+  type: ALL_MOVIES_RESET,
+});
+
+const movieUpdated = (updatedMovie) => ({
   type: MOVIE_UPDATED,
-  payload: {
-    id,
-    value,
-    property,
-  },
+  payload: updatedMovie,
 });
 
-export const movieEdited = (editedMovieData) => ({
-  type: MOVIE_EDITED,
-  payload: editedMovieData,
+const currentMovieUpdated = (updatedMovie) => ({
+  type: CURRENT_MOVIES_UPDATED,
+  payload: updatedMovie,
 });
 
-export const movieDeleted = (id) => ({
-  type: MOVIE_DELETED,
-  payload: id,
-});
+export const fetchMovies = () => (dispatch, _, api) => {
+  api('movies')
+    .then(({ data }) => {
+      dispatch(moviesLoaded(data));
+    });
+};
 
-export const starsChange = (id, value, property) => ({
-  type: MOVIE_UPDATED,
-  payload: {
-    id,
-    value,
-    property,
-  },
-});
+export const fetchMovieById = (id) => (dispatch, _, api) => {
+  api(`movies/${id}`)
+    .then(({ data }) => {
+      dispatch(currentMovieLoaded(data));
+    });
+};
 
-export const searchMovies = (searchQuery) => ({
-  type: MOVIES_SEARCH,
-  payload: searchQuery,
-});
+export const deleteMovieById = (id) => async (dispatch, _, api) => {
+  await api(`movies/${id}`, 'delete');
+  dispatch(currentMovieReset());
+};
 
-export const sortMovies = (sortType) => ({
-  type: MOVIES_SORT,
-  payload: sortType,
-});
+export const updateMovieById = (id, movie) => async (dispatch, _, api) => {
+  const response = await api(`movies/${id}`, 'put', movie);
+  dispatch(movieUpdated(response.data));
+};
+
+export const updateCurrentMovieById = (id, movie) => async (dispatch, _, api) => {
+  const response = await api(`movies/${id}`, 'put', movie);
+  dispatch(currentMovieUpdated(response.data));
+};

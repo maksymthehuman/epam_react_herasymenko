@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import { Routes } from '../../constants';
+import { Routes } from './AppRoutes.constants';
 import { ProtectedRoute } from '../../components/ProtectedRoute';
 import { HomePage } from '../homePage';
 import { MovieInfo } from '../movieInfo';

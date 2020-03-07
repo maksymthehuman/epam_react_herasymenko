@@ -1,38 +1,49 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { RatingStars } from '../../../../components/RatingStars';
-import { movieShortInfo } from '../../../../propTypes';
-import { Routes } from '../../../../constants';
-
-import { likesChange } from '../../actions';
+import { Routes } from '../../../AppRoutes/AppRoutes.constants';
+import { updateMovieById } from '../../actions';
 
 import styles from './MovieCard.module.scss';
 
 const MovieCardRoot = (props) => {
+  const { updateMovieById } = props;
+  const movie = props.movie;
+
   const {
     id,
     title,
     posterUrl,
-    stars,
     likes,
-    onLikesChange,
-  } = props;
+  } = props.movie;
 
-  const onTitleClick = (id) => {
-    props.history.push(`${Routes.MOVIEINFO}/${id}`);
+  const onLikesClick = (value) => {
+    const { movie } = props;
+    const previousLikes = props.movie.likes;
+    const id = props.movie.id;
+
+    const updatedMovie = {
+      ...movie,
+      likes: previousLikes + value,
+    };
+
+    updateMovieById(id, updatedMovie);
   };
 
   return (
     <div className={styles.card}>
       <div className={styles.titleContainer}>
-        <h4
-          className={styles.title}
-          title={title}
-          onClick={() => onTitleClick(id)}>
-          {title}
-        </h4>
+        <Link
+          to={`${Routes.MOVIEINFO}/${id}`}
+          className={styles.titleLink}>
+          <h4
+            className={styles.title}
+            title={title}>
+            {title}
+          </h4>
+        </Link>
       </div>
       <div className={styles.posterContainer}>
         <img
@@ -41,17 +52,17 @@ const MovieCardRoot = (props) => {
           alt="poster" />
       </div>
       <RatingStars
-        id={id}
-        stars={stars} />
+        movie={movie}
+        handleStarClick={updateMovieById} />
       <div className={styles.likesContainer}>
         <span
           className={`fa fa-thumbs-o-down ${styles.dislike}`}
-          onClick={() => onLikesChange(id, -1, 'likes')}>
+          onClick={() => onLikesClick(-1)}>
         </span>
         <span className={styles.likesAmount}>{likes}</span>
         <span
           className={`fa fa-thumbs-o-up ${styles.like}`}
-          onClick={() => onLikesChange(id, 1, 'likes')}>
+          onClick={() => onLikesClick(1)}>
         </span>
       </div>
     </div>
@@ -59,7 +70,7 @@ const MovieCardRoot = (props) => {
 };
 
 const mapDispatchToProps = {
-  onLikesChange: likesChange,
+  updateMovieById,
 };
 
 const withConnect = connect(
@@ -70,7 +81,6 @@ const withConnect = connect(
 export const MovieCard = withRouter(withConnect(MovieCardRoot));
 
 MovieCardRoot.propTypes = {
-  ...movieShortInfo,
-  onTitleClick: PropTypes.func,
-  onLikesChange: PropTypes.func.isRequired,
+  movie: PropTypes.object.isRequired,
+  updateMovieById: PropTypes.func.isRequired,
 };

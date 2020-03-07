@@ -1,31 +1,35 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+
 import { RatingStars } from '../../components/RatingStars';
 import { Actor } from './Actor';
 import { MovieActions } from './MovieActions';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
-import { movieShortInfo, movieAdirionalInfo } from '../../propTypes';
+
+import { fetchActors, actorsReset } from '../actorInfo/actions';
+import {
+  fetchMovieById,
+  currentMovieReset,
+  updateCurrentMovieById,
+} from '../homePage/actions';
 
 import styles from './MovieInfo.module.scss';
 
 const concatenateTextArray = (textArray) => textArray.join(', ');
 
-const movieDetails = (
-  {
+const movieDetails = (currentMovie, actors, handleStarClick) => {
+  const {
     id,
     title,
     likes,
-    stars,
     posterUrl,
     director,
     actorsIds,
     genres,
     description,
-  },
-  actors,
-) => {
+  } = currentMovie;
 
   const currentActors = actors.filter((actor) => actorsIds.includes(actor.id));
 
@@ -36,8 +40,8 @@ const movieDetails = (
           <h3 className={styles.title}>{title}</h3>
           <p className={styles.likes}>Likes: {likes}</p>
           <RatingStars
-            id={id}
-            stars={stars} />
+            movie={currentMovie}
+            handleStarClick={handleStarClick} />
         </div>
         <MovieActions id={id} />
       </div>
@@ -78,59 +82,86 @@ const movieDetails = (
   );
 };
 
-const noMovie = (
-  <div className={styles.noMovieContainer}>
-    <p className={styles.noMovie}>
-      Click on movie title to see more information
-    </p>
-  </div>
-);
+class MovieInfoRoot extends Component {
+  componentDidMount() {
+    const { fetchMovieById, fetchActors } = this.props;
+    const { id } = this.props.match.params;
 
-const MovieInfoRoot = (props) => {
-  const {
-    sortedMovies,
-    actors,
-  } = props;
+    fetchMovieById(id);
+    fetchActors();
+  }
 
-  const { id } = props.match.params;
+  componentWillUnmount() {
+    const { currentMovieReset, actorsReset } = this.props;
 
-  const currentMovie = sortedMovies.find((movie) => movie.id === +id);
+    currentMovieReset();
+    actorsReset();
+  }
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.content}>
-        <Header title="Movies" />
-        {currentMovie ? movieDetails(currentMovie, actors) : noMovie}
+  render() {
+    const {
+      currentMovie,
+      actors,
+      updateCurrentMovieById,
+    } = this.props;
+
+    if (!currentMovie || !actors) {
+      return <h1>Loading...</h1>
+    }
+
+    return (
+      <div className={styles.container}>
+        <div className={styles.content}>
+          <Header title="Movies" />
+          {movieDetails(currentMovie, actors, updateCurrentMovieById)}
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
-  );
-};
+    );
+  }
+}
 
-const mapStateToProps = (state) => ({
-  sortedMovies: state.moviesReducer.sortedMovies,
-  actors: state.moviesReducer.actors,
+const mapStateToProps = ({
+  actorsReducer: { actors },
+  moviesReducer: { currentMovie },
+}) => ({
+  actors,
+  currentMovie,
 });
+
+// const mapStateToProps = (state) => ({
+//   actors: state.actorsReducer.actors,
+//   currentMovie: state.moviesReducer.currentMovie,
+// });
+
+const mapDispatchToProps = {
+  fetchMovieById,
+  currentMovieReset,
+  fetchActors,
+  actorsReset,
+  updateCurrentMovieById,
+};
 
 const withConnect = connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 );
 
 export const MovieInfo = withConnect(MovieInfoRoot);
 
 movieDetails.propTypes = {
-  ...movieShortInfo,
-  ...movieAdirionalInfo,
+  currentMovie: PropTypes.object.isRequired,
+  actors: PropTypes.array.isRequired,
+  handleStarClick: PropTypes.func.isRequired,
 };
 
 MovieInfoRoot.propTypes = {
-  sortedMovies: PropTypes.arrayOf(
-    PropTypes.shape({
-      ...movieShortInfo,
-      ...movieAdirionalInfo,
-    }),
-  ),
+  fetchMovieById: PropTypes.func.isRequired,
+  fetchActors: PropTypes.func.isRequired,
+  currentMovieReset: PropTypes.func.isRequired,
+  actorsReset: PropTypes.func.isRequired,
+  updateCurrentMovieById: PropTypes.func.isRequired,
+  currentMovie: PropTypes.object,
   actors: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,

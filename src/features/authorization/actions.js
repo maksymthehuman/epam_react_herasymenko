@@ -1,10 +1,15 @@
+import axios from 'axios';
+
 import {
   USER_REGISTER,
   USER_LOGIN,
   USER_LOGOUT,
+  USER_UBSENT,
+  USER_STATUS_RESET,
+  USERS_LOADED,
 } from './types';
 
-export const userRegister = () => ({
+export const userRegistered = () => ({
   type: USER_REGISTER,
 });
 
@@ -15,3 +20,44 @@ export const userLogin = () => ({
 export const userLogout = () => ({
   type: USER_LOGOUT,
 });
+
+export const userStatusReset = () => ({
+  type: USER_STATUS_RESET,
+});
+
+const usersLoaded = (payload) => ({
+  type: USERS_LOADED,
+  payload,
+});
+
+const userUbsent = () => ({
+  type: USER_UBSENT,
+});
+
+export const fetchUsers = () => (dispatch, _, api) => {
+  api('users')
+    .then(({ data }) => {
+      dispatch(usersLoaded(data));
+    });
+};
+
+export const registerUser = (user) => (dispatch, _, api) => {
+  api('users', 'post', user);
+
+  dispatch(userRegistered());
+};
+
+export const verifyUser = (name, password) => (dispatch) => {
+  axios.get('http://localhost:3001/users', {
+    params: {
+      name,
+      password,
+    },
+  }).then(({ data }) => {
+    if (data.length) {
+      dispatch(userLogin());
+    } else {
+      dispatch(userUbsent());
+    }
+  });
+};

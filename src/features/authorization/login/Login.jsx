@@ -1,43 +1,40 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { userLogin } from '../actions';
-import { Routes } from '../../../constants';
+import { userLogin, verifyUser, userStatusReset, } from '../actions';
+import { Routes } from '../../AppRoutes/AppRoutes.constants';
 import { AuthorizationMessages } from '../constants';
 
 import styles from './Login.module.scss';
 
 class LoginRoot extends Component {
-  state = {
-    warningMessage: '',
-  };
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.isLoggedIn) {
+      this.props.history.push(Routes.HOMEPAGE);
+
+      return false;
+    }
+
+    return true;
+  }
+
+  componentWillUnmount() {
+    const { userStatusReset } = this.props;
+
+    userStatusReset();
+  }
 
   submitLogin = (event) => {
     event.preventDefault();
 
-    const { onLogin } = this.props;
+    const { verifyUser } = this.props;
     const { userName, password } = event.target;
-    const users = JSON.parse(localStorage.getItem('users')) || [];
-    const userData = users.find((user) => user.login === userName.value);
 
-    if (userData) {
-      if (userData.password === password.value) {
-        onLogin();
-        this.props.history.push(Routes.HOMEPAGE);
-      } else {
-        this.setState({
-          warningMessage: AuthorizationMessages.WRONGPASSWORD
-        });
-      }
-    } else {
-      this.setState({
-        warningMessage: AuthorizationMessages.NONEXISTENTLOGIN
-      });
-    }
+    verifyUser(userName.value, password.value);
   }
 
   render() {
-    const { warningMessage } = this.state;
+    const { wrongUserData } = this.props;
 
     return (
       <div className={styles.contentContainer}>
@@ -59,14 +56,13 @@ class LoginRoot extends Component {
               type="password"
               placeholder="Enter your password"
               required />
-            {warningMessage ?
-              <p className={styles.warning}>{warningMessage}</p> :
+            {wrongUserData ?
+              <p className={styles.warning}>{AuthorizationMessages.UBSENT_USER}</p> :
               null
             }
             <button className={styles.submit}>Login</button>
             <span>
-              {'Already have an account? '}
-              <Link to="/register">Go to Register page</Link>
+              Already have an account? <Link to={Routes.REGISTER}>Go to Register page</Link>
             </span>
           </form>
         </div>
@@ -75,12 +71,19 @@ class LoginRoot extends Component {
   }
 }
 
+const mapStateToProps = ({ userReducer: { isLoggedIn, wrongUserData } }) => ({
+  isLoggedIn,
+  wrongUserData,
+});
+
 const mapDispatchToProps = {
   onLogin: userLogin,
+  verifyUser,
+  userStatusReset,
 };
 
 const withConnect = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 );
 

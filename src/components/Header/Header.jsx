@@ -3,15 +3,11 @@ import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { userLogout } from '../../features/authorization/actions';
-import { Routes } from '../../constants';
+import { Routes } from '../../features/AppRoutes/AppRoutes.constants';
 
 import styles from './Header.module.scss';
 
-const HeaderRoot = ({ title, onLogout }) => {
-  const logout = () => {
-    onLogout();
-  };
-
+const HeaderRoot = ({ title, userLogout }) => {
   return (
     <div className={styles.container}>
       <div className={styles.mainNavigation}>
@@ -26,7 +22,7 @@ const HeaderRoot = ({ title, onLogout }) => {
         <div className={styles.logoutContainer}>
           <button
             className={styles.logout}
-            onClick={logout}>
+            onClick={userLogout}>
             Log out
         </button>
         </div>
@@ -39,7 +35,7 @@ const HeaderRoot = ({ title, onLogout }) => {
 };
 
 const mapDispatchToProps = {
-  onLogout: userLogout,
+  userLogout,
 };
 
 const withConnect = connect(
@@ -51,5 +47,5 @@ export const Header = withConnect(HeaderRoot);
 
 HeaderRoot.propTypes = {
   title: PropTypes.string,
-  onLogout: PropTypes.func,
+  userLogout: PropTypes.func.isRequired,
 };

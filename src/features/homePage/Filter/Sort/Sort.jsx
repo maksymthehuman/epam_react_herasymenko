@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { sortMovies } from '../../actions';
+import { sortApdate, sortReset } from '../actions';
 import { SortTypes } from './constants';
 
 import styles from './Sort.module.scss';
 
 const setIconClass = (currentSortType, direction, sortType) => {
   if (currentSortType === sortType) {
-    return direction ? 'fa fa-chevron-up' : 'fa fa-chevron-down';
+    return direction ? 'fa fa-chevron-down' : 'fa fa-chevron-up';
   }
 
   return 'fa fa-minus';
@@ -16,42 +16,44 @@ const setIconClass = (currentSortType, direction, sortType) => {
 
 const SortRoot = (props) => {
   const {
-    onSortMovies,
+    sortApdate,
     sortType,
-    sortedByAscend,
+    sortByAscend,
+    sortReset,
   } = props;
 
-  const sortLikesIconClass = setIconClass(sortType, sortedByAscend, SortTypes.LIKES);
-  const sortStarsIconClass = setIconClass(sortType, sortedByAscend, SortTypes.STARS);
+  const sortLikesIconClass = setIconClass(sortType, sortByAscend, SortTypes.LIKES);
+  const sortStarsIconClass = setIconClass(sortType, sortByAscend, SortTypes.STARS);
 
   return (
     <div className={styles.filter}>
       <button
         className={styles.sortButton}
-        onClick={() => onSortMovies(SortTypes.LIKES)}>
+        onClick={() => sortApdate(SortTypes.LIKES)}>
         By likes
       <span className={`${sortLikesIconClass} ${styles.sortIcon}`}></span>
       </button>
       <button
         className={styles.sortButton}
-        onClick={() => onSortMovies(SortTypes.STARS)}>
+        onClick={() => sortApdate(SortTypes.STARS)}>
         By rating
       <span className={`${sortStarsIconClass} ${styles.sortIcon}`}></span>
       </button>
       <button
         className={styles.sortButton}
-        onClick={() => onSortMovies('default')}>Reset</button>
+        onClick={sortReset}>Reset</button>
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  sortType: state.moviesReducer.sortType,
-  sortedByAscend: state.moviesReducer.sortedByAscend,
+const mapStateToProps = ({ filterReducer: { sortType, sortByAscend } }) => ({
+  sortType,
+  sortByAscend,
 });
 
 const mapDispatchToProps = {
-  onSortMovies: sortMovies,
+  sortApdate,
+  sortReset,
 };
 
 const withConnect = connect(
@@ -62,7 +64,8 @@ const withConnect = connect(
 export const Sort = withConnect(SortRoot);
 
 SortRoot.propTypes = {
-  onSortMovies: PropTypes.func.isRequired,
-  sortType: PropTypes.string.isRequired,
-  sortedByAscend: PropTypes.bool.isRequired,
+  sortApdate: PropTypes.func.isRequired,
+  sortReset: PropTypes.func.isRequired,
+  sortType: PropTypes.string,
+  sortByAscend: PropTypes.bool,
 };
