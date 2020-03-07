@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { fetchActorById, currentActorReset } from './actions';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
 
@@ -30,38 +31,51 @@ const actorDetails = ({ name, imgUrl, biography }) => (
   </article>
 );
 
-const noActor = (
-  <div className={styles.noActorContainer}>
-    <p className={styles.noActor}>
-      Sorry, there is no such actor
-    </p>
-  </div>
-);
+class ActorInfoRoot extends Component {
+  componentDidMount() {
+    const { fetchActorById } = this.props;
+    const { id } = this.props.match.params;
 
-const ActorInfoRoot = (props) => {
-  const { actors } = props;
-  const { id } = props.match.params;
+    fetchActorById(id);
+  }
 
-  const currentActor = actors.find((actor) => actor.id === +id);
+  componentWillUnmount() {
+    const { currentActorReset } = this.props;
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.content}>
-        <Header title="Actors" />
-        {currentActor ? actorDetails(currentActor) : noActor}
+    currentActorReset();
+  }
+
+  render() {
+    const { currentActor } = this.props;
+
+    if (!currentActor) {
+      return <h1>Loading...</h1>
+    }
+
+    return (
+      <div className={styles.container}>
+        <div className={styles.content}>
+          <Header title="Actors" />
+          {actorDetails(currentActor)}
+        </div>
+        <Footer />
       </div>
-      <Footer />
-    </div>
-  );
-};
+    );
+  }
+}
 
-const mapStateToProps = (state) => ({
-  actors: state.moviesReducer.actors,
+const mapStateToProps = ({ actorsReducer: { currentActor } }) => ({
+  currentActor,
 });
+
+const mapDispatchToProps = {
+  fetchActorById,
+  currentActorReset,
+};
 
 const withConnect = connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 );
 
 export const ActorInfo = withConnect(withRouter(ActorInfoRoot));
@@ -73,7 +87,9 @@ actorDetails.propTypes = {
 };
 
 ActorInfoRoot.propTypes = {
-  actors: PropTypes.array.isRequired,
+  fetchActorById: PropTypes.func.isRequired,
+  currentActorReset: PropTypes.func.isRequired,
+  currentActor: PropTypes.object,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string.isRequired,

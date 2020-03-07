@@ -1,41 +1,43 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Routes } from '../../../constants';
-import { movieDeleted } from '../../homePage/actions';
+import { Routes } from '../../AppRoutes/AppRoutes.constants';
+import { deleteMovieById } from '../../homePage/actions';
 
 import styles from './MovieActions.module.scss';
 
-const MovieActionsRoot = (props) => {
-  const {
-    id,
-    onDelete,
-  } = props;
+class MovieActionsRoot extends Component {
+  handleDelete = async () => {
+    const { id, deleteMovieById } = this.props;
 
-  const handleDelete = () => {
-    onDelete(id);
-    props.history.push(Routes.HOMEPAGE);
+    await deleteMovieById(id);
+
+    this.props.history.push(Routes.HOMEPAGE);
   };
 
-  return (
-    <div className={styles.movieActions}>
-      <button
-        className={styles.movieAction}
-        onClick={() => props.history.push(`${Routes.MOVIEEDIT}/${id}`)}>
-        EDIT
-      </button>
-      <button
-        className={styles.movieAction}
-        onClick={handleDelete}>
-        DELETE
-      </button>
-    </div>
-  );
+  render() {
+    const { id } = this.props;
+
+    return (
+      <div className={styles.movieActions}>
+        <button
+          className={styles.movieAction}
+          onClick={() => this.props.history.push(`${Routes.MOVIEEDIT}/${id}`)}>
+          EDIT
+          </button>
+        <button
+          className={styles.movieAction}
+          onClick={this.handleDelete}>
+          DELETE
+          </button>
+      </div>
+    );
+  }
 };
 
 const mapDispatchToProps = {
-  onDelete: movieDeleted,
+  deleteMovieById,
 };
 
 const withConnect = connect(

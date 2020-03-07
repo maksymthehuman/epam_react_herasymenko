@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { userRegister } from '../actions';
-import { Routes } from '../../../constants';
+import { fetchUsers, registerUser } from '../actions';
+import { Routes } from '../../AppRoutes/AppRoutes.constants';
 import { AuthorizationMessages } from '../constants';
 
 import styles from './Register.module.scss';
@@ -12,35 +12,31 @@ class RegisterRoot extends Component {
     warningMessage: '',
   };
 
-  isUserExist = (users, currentUser) => {
-    if (users.findIndex((user) => user.login === currentUser) >= 0) {
-      return true;
-    } else {
-      return false;
-    }
+  componentDidMount() {
+    const { fetchUsers } = this.props;
+
+    fetchUsers();
   }
+
+  isUserExist = (users, currentUser) => !!users.find((user) => user.name === currentUser);
 
   submitRegister = (event) => {
     event.preventDefault();
 
-    const { onRegister } = this.props;
+    const { users, registerUser } = this.props;
     const { userName, password } = event.target;
-    const users = JSON.parse(localStorage.getItem('users')) || [];
 
     const userData = {
-      login: userName.value,
+      name: userName.value,
       password: password.value,
     };
 
     if (this.isUserExist(users, userName.value)) {
       this.setState({
-        warningMessage: AuthorizationMessages.BUSYLOGIN
+        warningMessage: AuthorizationMessages.BUSY_LOGIN
       });
     } else {
-      users.push(userData);
-      localStorage.setItem('users', JSON.stringify(users));
-
-      onRegister();
+      registerUser(userData);
 
       this.props.history.push(Routes.HOMEPAGE);
     }
@@ -75,8 +71,7 @@ class RegisterRoot extends Component {
             }
             <button className={styles.submit}>Register</button>
             <span>
-              {'Already have an account? '}
-              <Link to="/login">Go to Login page</Link>
+              Already have an account? <Link to={Routes.LOGIN}>Go to Login page</Link>
             </span>
           </form>
         </div>
@@ -85,12 +80,17 @@ class RegisterRoot extends Component {
   }
 }
 
+const mapStateToProps = ({ userReducer: { users } }) => ({
+  users,
+});
+
 const mapDispatchToProps = {
-  onRegister: userRegister,
+  fetchUsers,
+  registerUser,
 };
 
 const withConnect = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 );
 

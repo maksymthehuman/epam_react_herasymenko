@@ -1,35 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { searchMovies } from '../../actions';
+import { searchApdate } from '../actions';
 
 import styles from './Search.module.scss';
 
 class SearchRoot extends Component {
-  state = {
-    searchQuery: ''
-  }
-
-  onInputChange = ({ target: { value } }) => {
-    this.setState({
-      searchQuery: value
-    });
-  };
-
   onSubmit = (event) => {
     event.preventDefault();
 
-    const { onSearch } = this.props;
-    const trimmedQuery = this.state.searchQuery.trim();
+    const { searchApdate } = this.props;
 
-    onSearch(trimmedQuery);
+    const searchQuery = event.target.searchField.value;
+    const trimmedQuery = searchQuery.trim();
 
-    this.setState({
-      searchQuery: trimmedQuery
-    });
+    searchApdate(trimmedQuery);
   };
 
   render() {
-    const { searchQuery } = this.state;
+    const { searchQuery } = this.props;
 
     return (
       <form
@@ -42,20 +30,24 @@ class SearchRoot extends Component {
           className={styles.searchField}
           type="search"
           placeholder="Search by title"
-          value={searchQuery}
-          onChange={this.onInputChange} />
+          name="searchField"
+          defaultValue={searchQuery} />
       </form>
     );
   }
 }
 
+const mapStateToProps = ({ filterReducer: { searchQuery } }) => ({
+  searchQuery,
+});
+
 const mapDispatchToProps = {
-  onSearch: searchMovies
+  searchApdate,
 };
 
 const withConnect = connect(
-  null,
-  mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps,
 );
 
 export const Search = withConnect(SearchRoot);

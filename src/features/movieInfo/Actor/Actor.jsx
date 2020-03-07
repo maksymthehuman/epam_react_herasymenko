@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'react-router-dom';
-import { Routes } from '../../../constants';
+import { withRouter, Link } from 'react-router-dom';
+import { Routes } from '../../AppRoutes/AppRoutes.constants';
 
 import styles from './Actor.module.scss';
 
@@ -9,11 +9,13 @@ const ActorRoot = (props) => {
   const { id, name } = props;
 
   return (
-    <span
-      className={styles.name}
-      onClick={() => props.history.push(`${Routes.ACTORINFO}/${id}`)}>
-      {name}
-    </span>
+    <Link
+      to={`${Routes.ACTORINFO}/${id}`}
+      className={styles.nameLink}>
+      <span className={styles.name}>
+        {name}
+      </span>
+    </Link>
   );
 };
 

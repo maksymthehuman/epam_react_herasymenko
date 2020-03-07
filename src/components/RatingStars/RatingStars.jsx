@@ -1,16 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { starsChange } from '../../features/homePage/actions';
 
 import styles from './RatingStars.module.scss';
 
-const RatingStarsRoot = (props) => {
-  const {
-    id,
-    stars,
-    onStarsChange,
-  } = props;
+export const RatingStars = (props) => {
+
+  const onStarClick = (relevantStars) => {
+    const { movie, handleStarClick } = props;
+    const id = props.movie.id;
+
+    const updatedMovie = {
+      ...movie,
+      stars: relevantStars,
+    };
+
+    handleStarClick(id, updatedMovie);
+  };
+
+  const { stars } = props.movie;
 
   const MAX_STARS = 5;
   const starsTemplate = [];
@@ -21,7 +28,7 @@ const RatingStarsRoot = (props) => {
         className={i <= stars ?
           `fa fa-star ${styles.star}` :
           `fa fa-star-o ${styles.star}`}
-        onClick={() => onStarsChange(id, i, 'stars')}>
+        onClick={() => onStarClick(i)}>
       </span>
     );
   }
@@ -33,24 +40,7 @@ const RatingStarsRoot = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
-  sortedMovies: state.moviesReducer.sortedMovies,
-  currentMovieId: state.moviesReducer.currentMovieId,
-});
-
-const mapDispatchToProps = {
-  onStarsChange: starsChange,
-};
-
-const withConnect = connect(
-  mapStateToProps,
-  mapDispatchToProps,
-);
-
-export const RatingStars = withConnect(RatingStarsRoot);
-
-RatingStarsRoot.propTypes = {
-  id: PropTypes.number.isRequired,
-  stars: PropTypes.number.isRequired,
-  onStarsChange: PropTypes.func.isRequired,
+RatingStars.propTypes = {
+  handleStarClick: PropTypes.func.isRequired,
+  movie: PropTypes.object.isRequired,
 };
