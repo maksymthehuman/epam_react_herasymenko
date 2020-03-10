@@ -1,0 +1,58 @@
+{
+  "app-title": "Movies",
+  "app-loading-text": "Loading...",
+
+  "app-login-title": "Please login",
+  "app-login-form-login-placeholder": "Enter your name",
+  "app-login-form-password-placeholder": "Enter your password",
+  "app-login-form-button-submit": "Login",
+  "app-login-dont-have-account": "Don't have an account? ",
+  "app-login-link-to-register": "Go to Register page",
+  "app-login-message-wrong-user": "Check whether the password or login is correct",
+
+  "app-register-title": "Please register",
+  "app-register-form-login-placeholder": "Enter your name",
+  "app-register-form-password-placeholder": "Enter your password",
+  "app-register-form-button-submit": "Register",
+  "app-register-have-account": "Already have an account? ",
+  "app-register-link-to-login": "Go to Login page",
+  "app-register-message-busy-login": "This username is already taken",
+
+  "app-languages-text": "Language:",
+  "app-languages-ukr": "УКР",
+  "app-languages-eng": "ENG",
+
+  "app-header-nav-homepage": "Homepage",
+  "app-header-logout": "Log out",
+
+  "app-homepage-title": "Movies",
+  
+  "app-filter-title": "Sort movies",
+  "app-filter-sort-likes": "By likes",
+  "app-filter-sort-rating": "By rating",
+  "app-filter-sort-reset": "Reset",
+  "app-filter-search-placeholder": "Search by title",
+
+  "app-movieinfo-title": "Movies",
+  "app-movieinfo-likes": "Likes: ",
+  "app-movieinfo-button-edit": "Edit",
+  "app-movieinfo-button-delete": "Delete",
+  "app-movieinfo-director": "Director: ",
+  "app-movieinfo-actors": "Actors: ",
+  "app-movieinfo-genres": "Genres: ",
+  "app-movieinfo-description": "Description: ",
+  
+  "app-movieedit-title": "Movies",
+  "app-movieedit-form-label-title": "Title",
+  "app-movieedit-form-label-image-url": "Image URL",
+  "app-movieedit-form-label-director": "Director",
+  "app-movieedit-form-label-genres": "Genres",
+  "app-movieedit-form-label-genres-tip": "Enter movie genres separeted by comma and space: ', '",
+  "app-movieedit-form-label-description": "Description",
+  "app-movieedit-form-button-submit": "Submit",
+  "app-movieedit-form-button-back": "Go back",
+
+  "app-actorinfo-title": "Actors",
+  "app-actorinfo-name": "Name: ",
+  "app-actorinfo-biography": "Biography: "
+}

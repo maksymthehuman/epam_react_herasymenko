@@ -1,11 +1,23 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { withTranslation } from '../../../hocs/withTranslation';
 import { userLogin, verifyUser, userStatusReset, } from '../actions';
 import { Routes } from '../../AppRoutes/AppRoutes.constants';
-import { AuthorizationMessages } from '../constants';
+import { LanguagesList } from '../../../components/LanguagesList';
 
 import styles from './Login.module.scss';
+
+const words = [
+  'app-title',
+  'app-login-title',
+  'app-login-form-login-placeholder',
+  'app-login-form-password-placeholder',
+  'app-login-form-button-submit',
+  'app-login-dont-have-account',
+  'app-login-link-to-register',
+  'app-login-message-wrong-user',
+];
 
 class LoginRoot extends Component {
   shouldComponentUpdate(nextProps) {
@@ -34,13 +46,13 @@ class LoginRoot extends Component {
   }
 
   render() {
-    const { wrongUserData } = this.props;
+    const { translatedWords, wrongUserData } = this.props;
 
     return (
       <div className={styles.contentContainer}>
-        <h1 className={styles.title}>Movies</h1>
+        <h1 className={styles.title}>{translatedWords['app-title']}</h1>
         <div className={styles.container}>
-          <h2 className={styles.formTitle}>Please login</h2>
+          <h2 className={styles.formTitle}>{translatedWords['app-login-title']}</h2>
           <form
             className={styles.signIn}
             onSubmit={this.submitLogin}>
@@ -48,23 +60,27 @@ class LoginRoot extends Component {
               className={styles.inputField}
               name="userName"
               type="text"
-              placeholder="Enter your name"
+              placeholder={translatedWords['app-login-form-login-placeholder']}
               required />
             <input
               className={styles.inputField}
               name="password"
               type="password"
-              placeholder="Enter your password"
+              placeholder={translatedWords['app-login-form-password-placeholder']}
               required />
             {wrongUserData ?
-              <p className={styles.warning}>{AuthorizationMessages.UBSENT_USER}</p> :
+              <p className={styles.warning}>{translatedWords['app-login-message-wrong-user']}</p> :
               null
             }
-            <button className={styles.submit}>Login</button>
+            <button className={styles.submit}>{translatedWords['app-login-form-button-submit']}</button>
             <span>
-              Already have an account? <Link to={Routes.REGISTER}>Go to Register page</Link>
+              {translatedWords['app-login-dont-have-account']}
+              <Link to={Routes.REGISTER}>
+                {translatedWords['app-login-link-to-register']}
+              </Link>
             </span>
           </form>
+          <LanguagesList />
         </div>
       </div>
     );
@@ -87,4 +103,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export const Login = withConnect(LoginRoot);
+export const Login = withTranslation(words)(withConnect(LoginRoot));

@@ -29,7 +29,7 @@ export const RatingStars = (props) => {
           `fa fa-star ${styles.star}` :
           `fa fa-star-o ${styles.star}`}
         onClick={() => onStarClick(i)}>
-      </span>
+      </span>,
     );
   }
 

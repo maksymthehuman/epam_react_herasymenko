@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { withTranslation } from '../../../../hocs/withTranslation'
 import { searchApdate } from '../actions';
 
 import styles from './Search.module.scss';
+
+const words = ['app-filter-search-placeholder'];
 
 class SearchRoot extends Component {
   onSubmit = (event) => {
@@ -17,7 +20,7 @@ class SearchRoot extends Component {
   };
 
   render() {
-    const { searchQuery } = this.props;
+    const { translatedWords, searchQuery } = this.props;
 
     return (
       <form
@@ -29,7 +32,7 @@ class SearchRoot extends Component {
         <input
           className={styles.searchField}
           type="search"
-          placeholder="Search by title"
+          placeholder={translatedWords['app-filter-search-placeholder']}
           name="searchField"
           defaultValue={searchQuery} />
       </form>
@@ -50,4 +53,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export const Search = withConnect(SearchRoot);
+export const Search = withTranslation(words)(withConnect(SearchRoot));

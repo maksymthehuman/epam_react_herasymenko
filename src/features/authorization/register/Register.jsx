@@ -1,11 +1,24 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { withTranslation } from '../../../hocs/withTranslation';
 import { fetchUsers, registerUser } from '../actions';
 import { Routes } from '../../AppRoutes/AppRoutes.constants';
-import { AuthorizationMessages } from '../constants';
+import { LanguagesList } from '../../../components/LanguagesList';
 
 import styles from './Register.module.scss';
+
+
+const words = [
+  'app-title',
+  'app-register-title',
+  'app-register-form-login-placeholder',
+  'app-register-form-password-placeholder',
+  'app-register-form-button-submit',
+  'app-register-have-account',
+  'app-register-link-to-login',
+  'app-register-message-busy-login',
+];
 
 class RegisterRoot extends Component {
   state = {
@@ -23,7 +36,7 @@ class RegisterRoot extends Component {
   submitRegister = (event) => {
     event.preventDefault();
 
-    const { users, registerUser } = this.props;
+    const { translatedWords, users, registerUser } = this.props;
     const { userName, password } = event.target;
 
     const userData = {
@@ -33,7 +46,7 @@ class RegisterRoot extends Component {
 
     if (this.isUserExist(users, userName.value)) {
       this.setState({
-        warningMessage: AuthorizationMessages.BUSY_LOGIN
+        warningMessage: translatedWords['app-register-message-busy-login'],
       });
     } else {
       registerUser(userData);
@@ -44,12 +57,13 @@ class RegisterRoot extends Component {
 
   render() {
     const { warningMessage } = this.state;
+    const { translatedWords } = this.props;
 
     return (
       <div className={styles.contentContainer}>
-        <h1 className={styles.title}>Movies</h1>
+        <h1 className={styles.title}>{translatedWords['app-title']}</h1>
         <div className={styles.container}>
-          <h2 className={styles.formTitle}>Please register</h2>
+          <h2 className={styles.formTitle}>{translatedWords['app-register-title']}</h2>
           <form
             className={styles.signIn}
             onSubmit={this.submitRegister}>
@@ -57,23 +71,29 @@ class RegisterRoot extends Component {
               className={styles.inputField}
               name="userName"
               type="text"
-              placeholder="Enter your name"
+              placeholder={translatedWords['app-register-form-login-placeholder']}
               required />
             <input
               className={styles.inputField}
               name="password"
               type="password"
-              placeholder="Enter your password"
+              placeholder={translatedWords['app-register-form-password-placeholder']}
               required />
             {warningMessage ?
               <p className={styles.warning}>{warningMessage}</p> :
               null
             }
-            <button className={styles.submit}>Register</button>
+            <button className={styles.submit}>
+              {translatedWords['app-register-form-button-submit']}
+            </button>
             <span>
-              Already have an account? <Link to={Routes.LOGIN}>Go to Login page</Link>
+              {translatedWords['app-register-have-account']}
+              <Link to={Routes.LOGIN}>
+                {translatedWords['app-register-link-to-login']}
+              </Link>
             </span>
           </form>
+          <LanguagesList />
         </div>
       </div>
     );
@@ -94,4 +114,4 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export const Register = withConnect(RegisterRoot);
+export const Register = withTranslation(words)(withConnect(RegisterRoot));

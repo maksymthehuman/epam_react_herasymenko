@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
+import PropTypes from 'prop-types';
+import { translatedWordsProp } from '../../propTypes';
+import { withTranslation } from '../../hocs/withTranslation';
 import { RatingStars } from '../../components/RatingStars';
 import { Actor } from './Actor';
 import { MovieActions } from './MovieActions';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
-
 import { fetchActors, actorsReset } from '../actorInfo/actions';
 import {
   fetchMovieById,
@@ -17,9 +17,19 @@ import {
 
 import styles from './MovieInfo.module.scss';
 
+const words = [
+  'app-loading-text',
+  'app-movieinfo-title',
+  'app-movieinfo-likes',
+  'app-movieinfo-director',
+  'app-movieinfo-actors',
+  'app-movieinfo-genres',
+  'app-movieinfo-description',
+];
+
 const concatenateTextArray = (textArray) => textArray.join(', ');
 
-const movieDetails = (currentMovie, actors, handleStarClick) => {
+const movieDetails = (translatedWords, currentMovie, actors, handleStarClick) => {
   const {
     id,
     title,
@@ -38,7 +48,7 @@ const movieDetails = (currentMovie, actors, handleStarClick) => {
       <div className={styles.aside}>
         <div className={styles.shortInfo}>
           <h3 className={styles.title}>{title}</h3>
-          <p className={styles.likes}>Likes: {likes}</p>
+          <p className={styles.likes}>{translatedWords['app-movieinfo-likes']}{likes}</p>
           <RatingStars
             movie={currentMovie}
             handleStarClick={handleStarClick} />
@@ -54,11 +64,15 @@ const movieDetails = (currentMovie, actors, handleStarClick) => {
         </div>
         <div>
           <p className={styles.text}>
-            <span className={styles.paragraph}>Director: </span>
+            <span className={styles.paragraph}>
+              {translatedWords['app-movieinfo-director']}
+            </span>
             {director}
           </p>
           <p className={styles.text}>
-            <span className={styles.paragraph}>Actors: </span>
+            <span className={styles.paragraph}>
+              {translatedWords['app-movieinfo-actors']}
+            </span>
             {currentActors.map(({ id, name }, index) => (
               <span key={id}>
                 <Actor
@@ -69,11 +83,15 @@ const movieDetails = (currentMovie, actors, handleStarClick) => {
             ))}
           </p>
           <p className={styles.text}>
-            <span className={styles.paragraph}>Genres: </span>
+            <span className={styles.paragraph}>
+              {translatedWords['app-movieinfo-genres']}
+            </span>
             {concatenateTextArray(genres)}
           </p>
           <p className={styles.text}>
-            <span className={styles.paragraph}>Description: </span>
+            <span className={styles.paragraph}>
+              {translatedWords['app-movieinfo-description']}
+            </span>
             {description}
           </p>
         </div>
@@ -100,20 +118,21 @@ class MovieInfoRoot extends Component {
 
   render() {
     const {
+      translatedWords,
       currentMovie,
       actors,
       updateCurrentMovieById,
     } = this.props;
 
     if (!currentMovie || !actors) {
-      return <h1>Loading...</h1>
+      return <h1>{translatedWords['app-loading-text']}</h1>;
     }
 
     return (
       <div className={styles.container}>
         <div className={styles.content}>
-          <Header title="Movies" />
-          {movieDetails(currentMovie, actors, updateCurrentMovieById)}
+          <Header title={translatedWords['app-movieinfo-title']} />
+          {movieDetails(translatedWords, currentMovie, actors, updateCurrentMovieById)}
         </div>
         <Footer />
       </div>
@@ -129,11 +148,6 @@ const mapStateToProps = ({
   currentMovie,
 });
 
-// const mapStateToProps = (state) => ({
-//   actors: state.actorsReducer.actors,
-//   currentMovie: state.moviesReducer.currentMovie,
-// });
-
 const mapDispatchToProps = {
   fetchMovieById,
   currentMovieReset,
@@ -147,15 +161,17 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export const MovieInfo = withConnect(MovieInfoRoot);
+export const MovieInfo = withTranslation(words)(withConnect(MovieInfoRoot));
 
 movieDetails.propTypes = {
+  translatedWords: translatedWordsProp,
   currentMovie: PropTypes.object.isRequired,
   actors: PropTypes.array.isRequired,
   handleStarClick: PropTypes.func.isRequired,
 };
 
 MovieInfoRoot.propTypes = {
+  translatedWords: translatedWordsProp,
   fetchMovieById: PropTypes.func.isRequired,
   fetchActors: PropTypes.func.isRequired,
   currentMovieReset: PropTypes.func.isRequired,

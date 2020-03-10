@@ -14,3 +14,5 @@ export const movieAdirionalInfo = {
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
   description: PropTypes.string.isRequired,
 };
+
+export const translatedWordsProp = PropTypes.objectOf(PropTypes.string).isRequired;

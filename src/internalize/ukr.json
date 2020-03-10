@@ -1,0 +1,58 @@
+{
+  "app-title": "Фільми",
+  "app-loading-text": "Завантаження...",
+
+  "app-login-title": "Будь ласка, авторизуйтесь",
+  "app-login-form-login-placeholder": "Введіть логін",
+  "app-login-form-password-placeholder": "Введіть ваш пароль",
+  "app-login-form-button-submit": "Увійти",
+  "app-login-dont-have-account": "Не маєте аккаунта? ",
+  "app-login-link-to-register": "Перейти на сторінку реєстрації",
+  "app-login-message-wrong-user": "Перевірте правельність пароля та логіна",
+
+  "app-register-title": "Будь ласка, зареєструйтесь",
+  "app-register-form-login-placeholder": "Введіть логін",
+  "app-register-form-password-placeholder": "Введіть ваш пароль",
+  "app-register-form-button-submit": "Зареєструватись",
+  "app-register-have-account": "Вже маєте аккаунт? ",
+  "app-register-link-to-login": "Перейти на сторінку авторизації",
+  "app-register-message-busy-login": "Це ім'я користувача вже зайнято",
+
+  "app-languages-text": "Мова:",
+  "app-languages-ukr": "УКР",
+  "app-languages-eng": "ENG",
+  
+  "app-header-nav-homepage": "Головна",
+  "app-header-logout": "Вийти",
+
+  "app-homepage-title": "Фільми",
+
+  "app-filter-title": "Відсортувати фільми",
+  "app-filter-sort-likes": "За лайками",
+  "app-filter-sort-rating": "За рейтингом",
+  "app-filter-sort-reset": "Скинути",
+  "app-filter-search-placeholder": "Пошук за назвою",
+
+  "app-movieinfo-title": "Фільми",
+  "app-movieinfo-likes": "Лайки: ",
+  "app-movieinfo-button-edit": "Редагувати",
+  "app-movieinfo-button-delete": "Видалити",
+  "app-movieinfo-director": "Режисер: ",
+  "app-movieinfo-actors": "Актори: ",
+  "app-movieinfo-genres": "Жанри: ",
+  "app-movieinfo-description": "Опис: ",
+  
+  "app-movieedit-title": "Фільми",
+  "app-movieedit-form-label-title": "Назва",
+  "app-movieedit-form-label-image-url": "Посилання на постер",
+  "app-movieedit-form-label-director": "Режисер",
+  "app-movieedit-form-label-genres": "Жанри",
+  "app-movieedit-form-label-genres-tip": "Введіть назви жанрів через кому та пробіл: ', '",
+  "app-movieedit-form-label-description": "Опис",
+  "app-movieedit-form-button-submit": "Надіслати",
+  "app-movieedit-form-button-back": "Назад",
+
+  "app-actorinfo-title": "Актори",
+  "app-actorinfo-name": "Ім'я: ",
+  "app-actorinfo-biography": "Біографія: "
+}

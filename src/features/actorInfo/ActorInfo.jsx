@@ -1,35 +1,52 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
 import PropTypes from 'prop-types';
+import { translatedWordsProp } from '../../propTypes';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { withTranslation } from '../../hocs/withTranslation';
 import { fetchActorById, currentActorReset } from './actions';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
 
 import styles from './ActorInfo.module.scss';
 
-const actorDetails = ({ name, imgUrl, biography }) => (
-  <article className={styles.actor}>
-    <div className={styles.actorInfo}>
-      <div className={styles.photoContainer}>
-        <img
-          className={styles.photo}
-          src={imgUrl}
-          alt={name} />
+const words = [
+  'app-loading-text',
+  'app-actorinfo-title',
+  'app-actorinfo-name',
+  'app-actorinfo-biography',
+];
+
+const actorDetails = (
+  translatedWords,
+  { name, imgUrl, biography },
+) => (
+    <article className={styles.actor}>
+      <div className={styles.actorInfo}>
+        <div className={styles.photoContainer}>
+          <img
+            className={styles.photo}
+            src={imgUrl}
+            alt={name} />
+        </div>
+        <div className={styles.textContent}>
+          <p className={styles.text}>
+            <span className={styles.paragraph}>
+              {translatedWords['app-actorinfo-name']}
+            </span>
+            {name}
+          </p>
+          <p className={styles.text}>
+            <span className={styles.paragraph}>
+              {translatedWords['app-actorinfo-biography']}
+            </span>
+            {biography}
+          </p>
+        </div>
       </div>
-      <div className={styles.textContent}>
-        <p className={styles.text}>
-          <span className={styles.paragraph}>Name: </span>
-          {name}
-        </p>
-        <p className={styles.text}>
-          <span className={styles.paragraph}>Biography: </span>
-          {biography}
-        </p>
-      </div>
-    </div>
-  </article>
-);
+    </article>
+  );
 
 class ActorInfoRoot extends Component {
   componentDidMount() {
@@ -46,17 +63,17 @@ class ActorInfoRoot extends Component {
   }
 
   render() {
-    const { currentActor } = this.props;
+    const { translatedWords, currentActor } = this.props;
 
     if (!currentActor) {
-      return <h1>Loading...</h1>
+      return <h1>{translatedWords['app-loading-text']}</h1>;
     }
 
     return (
       <div className={styles.container}>
         <div className={styles.content}>
-          <Header title="Actors" />
-          {actorDetails(currentActor)}
+          <Header title={translatedWords['app-actorinfo-title']} />
+          {actorDetails(translatedWords, currentActor)}
         </div>
         <Footer />
       </div>
@@ -78,15 +95,21 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export const ActorInfo = withConnect(withRouter(ActorInfoRoot));
+export const ActorInfo = compose(
+  withTranslation(words),
+  withRouter,
+  withConnect,
+)(ActorInfoRoot);
 
 actorDetails.propTypes = {
+  translatedWords: translatedWordsProp,
   name: PropTypes.string.isRequired,
   imgUrl: PropTypes.string.isRequired,
   biography: PropTypes.string.isRequired,
 };
 
 ActorInfoRoot.propTypes = {
+  translatedWords: translatedWordsProp,
   fetchActorById: PropTypes.func.isRequired,
   currentActorReset: PropTypes.func.isRequired,
   currentActor: PropTypes.object,

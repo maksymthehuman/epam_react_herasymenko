@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { withTranslation } from '../../../hocs/withTranslation';
 import { Routes } from '../../AppRoutes/AppRoutes.constants';
 import { deleteMovieById } from '../../homePage/actions';
 
 import styles from './MovieActions.module.scss';
+
+const words = [
+  'app-movieinfo-button-edit',
+  'app-movieinfo-button-delete',
+];
 
 class MovieActionsRoot extends Component {
   handleDelete = async () => {
@@ -17,20 +24,20 @@ class MovieActionsRoot extends Component {
   };
 
   render() {
-    const { id } = this.props;
+    const { translatedWords, id } = this.props;
 
     return (
       <div className={styles.movieActions}>
         <button
           className={styles.movieAction}
           onClick={() => this.props.history.push(`${Routes.MOVIEEDIT}/${id}`)}>
-          EDIT
-          </button>
+          {translatedWords['app-movieinfo-button-edit']}
+        </button>
         <button
           className={styles.movieAction}
           onClick={this.handleDelete}>
-          DELETE
-          </button>
+          {translatedWords['app-movieinfo-button-delete']}
+        </button>
       </div>
     );
   }
@@ -45,7 +52,11 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export const MovieActions = withRouter(withConnect(MovieActionsRoot));
+export const MovieActions = compose(
+  withTranslation(words),
+  withRouter,
+  withConnect,
+)(MovieActionsRoot);
 
 MovieActionsRoot.propTypes = {
   id: PropTypes.number,

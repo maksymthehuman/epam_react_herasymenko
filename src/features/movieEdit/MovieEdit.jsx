@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
+import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { Form, Field } from 'react-final-form';
 import PropTypes from 'prop-types';
+import { withTranslation } from '../../hocs/withTranslation';
 import { Routes } from '../AppRoutes/AppRoutes.constants';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
@@ -9,6 +12,19 @@ import { fetchMovieById, updateCurrentMovieById, currentMovieReset } from '../ho
 import { movieShortInfo } from '../../propTypes';
 
 import styles from './MovieEdit.module.scss';
+
+const words = [
+  'app-loading-text',
+  'app-movieedit-title',
+  'app-movieedit-form-label-title',
+  'app-movieedit-form-label-image-url',
+  'app-movieedit-form-label-director',
+  'app-movieedit-form-label-genres',
+  'app-movieedit-form-label-genres-tip',
+  'app-movieedit-form-label-description',
+  'app-movieedit-form-button-submit',
+  'app-movieedit-form-button-back',
+];
 
 class MovieEditRoot extends Component {
   componentDidMount() {
@@ -24,9 +40,7 @@ class MovieEditRoot extends Component {
     currentMovieReset();
   }
 
-  submitEditedMovie = (event) => {
-    event.preventDefault();
-
+  submitEditedMovie = ({ genres, ...data }) => {
     const { updateCurrentMovieById } = this.props;
     const {
       id,
@@ -35,26 +49,15 @@ class MovieEditRoot extends Component {
       actorsIds,
     } = this.props.currentMovie;
 
-    const {
-      movieTitle,
-      moviePoster,
-      movieDirector,
-      movieGenres,
-      movieDescription,
-    } = event.target;
-
-    const formattedGenres = movieGenres.value.split(', ');
+    const formattedGenres = genres.split(', ');
 
     const newMovieData = {
       id,
-      title: movieTitle.value,
-      posterUrl: moviePoster.value,
       stars,
       likes,
       actorsIds,
-      director: movieDirector.value,
       genres: formattedGenres,
-      description: movieDescription.value,
+      ...data,
     };
 
     updateCurrentMovieById(id, newMovieData);
@@ -62,10 +65,10 @@ class MovieEditRoot extends Component {
   };
 
   render() {
-    const { currentMovie } = this.props;
+    const { translatedWords, currentMovie } = this.props;
 
     if (!currentMovie) {
-      return <h1>Loading...</h1>
+      return <h1>{translatedWords['app-loading-text']}</h1>
     }
 
     const { id, title, posterUrl, description, director } = currentMovie;
@@ -74,75 +77,86 @@ class MovieEditRoot extends Component {
     return (
       <div className={styles.container}>
         <div className={styles.content}>
-          <Header title="Movies" />
-          <form
-            className={styles.movieEdit}
-            onSubmit={this.submitEditedMovie}>
-            <div className={styles.inputGroup}>
-              <label className={styles.description} htmlFor="movieTitle">Title</label>
-              <input
-                className={styles.inputField}
-                type="text"
-                id="movieTitle"
-                name="movieTitle"
-                defaultValue={title}
-                required />
-            </div>
-            <div className={styles.inputGroup}>
-              <label className={styles.description} htmlFor="moviePoster">Image URL</label>
-              <input
-                className={styles.inputField}
-                type="text"
-                id="moviePoster"
-                name="moviePoster"
-                defaultValue={posterUrl}
-                required />
-            </div>
-            <div className={styles.inputGroup}>
-              <label className={styles.description} htmlFor="movieDirector">Director</label>
-              <input
-                className={styles.inputField}
-                type="text"
-                id="movieDirector"
-                name="movieDirector"
-                defaultValue={director}
-                required />
-            </div>
-            <div className={styles.inputGroup}>
-              <label className={styles.description} htmlFor="movieGenres">Genres</label>
-              <input
-                className={styles.inputField}
-                type="text"
-                id="movieGenres"
-                name="movieGenres"
-                title="Enter movie genres separated by comma and space: ', '"
-                defaultValue={genres}
-                required />
-            </div>
-            <div className={styles.inputGroup}>
-              <label className={styles.description} htmlFor="movieDescription">Description</label>
-              <textarea
-                className={styles.inputFieldLarge}
-                id="movieDescription"
-                name="movieDescription"
-                defaultValue={description}
-                required>
-              </textarea>
-            </div>
-            <div className={styles.submitContainer}>
-              <button
-                className={styles.actionButton}
-                type="submit">
-                Submit
-            </button>
-              <button
-                className={styles.actionButton}
-                type="button"
-                onClick={() => this.props.history.push(`${Routes.MOVIEINFO}/${id}`)}>
-                Go back
-            </button>
-            </div>
-          </form>
+          <Header title={translatedWords['app-movieedit-title']} />
+          <Form
+            initialValues={{ title, posterUrl, director, genres, description }}
+            onSubmit={this.submitEditedMovie}
+            render={({ handleSubmit }) => (
+              <form
+                className={styles.movieEdit}
+                onSubmit={handleSubmit}>
+                <div className={styles.inputGroup}>
+                  <label className={styles.description} htmlFor="title">
+                    {translatedWords['app-movieedit-form-label-title']}
+                  </label>
+                  <Field
+                    className={styles.inputField}
+                    id="title"
+                    name="title"
+                    component="input"
+                    required />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label className={styles.description} htmlFor="posterUrl">
+                    {translatedWords['app-movieedit-form-label-image-url']}
+                  </label>
+                  <Field
+                    className={styles.inputField}
+                    id="posterUrl"
+                    name="posterUrl"
+                    component="input"
+                    required />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label className={styles.description} htmlFor="director">
+                    {translatedWords['app-movieedit-form-label-director']}
+                  </label>
+                  <Field
+                    className={styles.inputField}
+                    id="director"
+                    name="director"
+                    component="input"
+                    required />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label className={styles.description} htmlFor="genres">
+                    {translatedWords['app-movieedit-form-label-genres']}
+                  </label>
+                  <Field
+                    className={styles.inputField}
+                    id="genres"
+                    name="genres"
+                    title={translatedWords['app-movieedit-form-label-genres-tip']}
+                    component="input"
+                    required />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label className={styles.description} htmlFor="description">
+                    {translatedWords['app-movieedit-form-label-description']}
+                  </label>
+                  <Field
+                    className={styles.inputFieldLarge}
+                    id="description"
+                    name="description"
+                    component="textarea"
+                    required />
+                </div>
+                <div className={styles.submitContainer}>
+                  <button
+                    className={styles.actionButton}
+                    type="submit">
+                    {translatedWords['app-movieedit-form-button-submit']}
+                  </button>
+                  <button
+                    className={styles.actionButton}
+                    type="button"
+                    onClick={() => this.props.history.push(`${Routes.MOVIEINFO}/${id}`)}>
+                    {translatedWords['app-movieedit-form-button-back']}
+                  </button>
+                </div>
+              </form>
+            )}
+          />
         </div>
         <Footer />
       </div>
@@ -165,7 +179,11 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export const MovieEdit = withRouter(withConnect(MovieEditRoot));
+export const MovieEdit = compose(
+  withTranslation(words),
+  withRouter,
+  withConnect,
+)(MovieEditRoot);
 
 MovieEditRoot.propTypes = {
   sortedMovies: PropTypes.arrayOf(
