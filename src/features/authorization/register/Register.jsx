@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { withTranslation } from '../../../hocs/withTranslation';
 import { fetchUsers, registerUser } from '../actions';
 import { Routes } from '../../AppRoutes/AppRoutes.constants';
 import { LanguagesList } from '../../../components/LanguagesList';
+import { translatedWordsProp } from '../../../propTypes';
 
 import styles from './Register.module.scss';
-
 
 const words = [
   'app-title',
@@ -115,3 +116,13 @@ const withConnect = connect(
 );
 
 export const Register = withTranslation(words)(withConnect(RegisterRoot));
+
+RegisterRoot.propTypes = {
+  fetchUsers: PropTypes.func.isRequired,
+  registerUser: PropTypes.func.isRequired,
+  users: PropTypes.arrayOf(PropTypes.object),
+  translatedWords: translatedWordsProp,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
+};

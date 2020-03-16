@@ -124,11 +124,7 @@ class MovieInfoRoot extends Component {
       updateCurrentMovieById,
     } = this.props;
 
-    if (!currentMovie || !actors) {
-      return <h1>{translatedWords['app-loading-text']}</h1>;
-    }
-
-    return (
+    return currentMovie && actors ? (
       <div className={styles.container}>
         <div className={styles.content}>
           <Header title={translatedWords['app-movieinfo-title']} />
@@ -136,7 +132,9 @@ class MovieInfoRoot extends Component {
         </div>
         <Footer />
       </div>
-    );
+    ) : (
+        <h1>{translatedWords['app-loading-text']}</h1>
+      );
   }
 }
 

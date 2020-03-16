@@ -5,6 +5,8 @@ import {
   ACTORS_RESET,
 } from './types';
 
+import { API_URLs } from '../../constants';
+
 const currentActorLoaded = (payload) => ({
   type: ACTOR_LOADED,
   payload,
@@ -24,15 +26,17 @@ export const actorsReset = () => ({
 });
 
 export const fetchActorById = (id) => (dispatch, _, api) => {
-  api(`actors/${id}`)
+  api(`${API_URLs.ACTORS}/${id}`)
     .then(({ data }) => {
       dispatch(currentActorLoaded(data));
-    });
+    })
+    .catch((error) => console.warn(error));
 };
 
 export const fetchActors = () => (dispatch, _, api) => {
-  api('actors')
+  api(API_URLs.ACTORS)
     .then(({ data }) => {
       dispatch(actorsLoaded(data));
-    });
+    })
+    .catch((error) => console.warn(error));
 };

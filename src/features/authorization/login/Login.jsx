@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { withTranslation } from '../../../hocs/withTranslation';
-import { userLogin, verifyUser, userStatusReset, } from '../actions';
+import { userLogin, verifyUser, userStatusReset } from '../actions';
 import { Routes } from '../../AppRoutes/AppRoutes.constants';
 import { LanguagesList } from '../../../components/LanguagesList';
+import { translatedWordsProp } from '../../../propTypes';
 
 import styles from './Login.module.scss';
 
@@ -104,3 +106,15 @@ const withConnect = connect(
 );
 
 export const Login = withTranslation(words)(withConnect(LoginRoot));
+
+LoginRoot.propTypes = {
+  onLogin: PropTypes.func.isRequired,
+  verifyUser: PropTypes.func.isRequired,
+  userStatusReset: PropTypes.func.isRequired,
+  isLoggedIn: PropTypes.bool.isRequired,
+  wrongUserData: PropTypes.bool.isRequired,
+  translatedWords: translatedWordsProp,
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }),
+};

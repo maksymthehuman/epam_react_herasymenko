@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { withTranslation } from '../../../hocs/withTranslation'
+import { withTranslation } from '../../../hocs/withTranslation';
 import { fetchMovies, moviesResetToDefault } from '../actions';
 import { MovieCard } from './MovieCard';
-import { movieShortInfo, movieAdirionalInfo } from '../../../propTypes';
+import {
+  movieShortInfo,
+  movieAditionalInfo,
+  translatedWordsProp,
+} from '../../../propTypes';
 
 import styles from './MoviesList.module.scss';
 
@@ -35,7 +39,7 @@ class MoviesListRoot extends Component {
 
       return searchQuery.test(movie.title);
     });
-  };
+  }
 
   compareProperties = (property, a, b, ascend = true) => {
     const firstObject = a[property];
@@ -62,18 +66,19 @@ class MoviesListRoot extends Component {
       sortByAscend,
     } = this.props;
 
-    if (!moviesList) {
-      return <h1>{translatedWords['app-loading-text']}</h1>
+    let filteredMovies;
+    let sortedMovies;
+
+    if (moviesList) {
+      filteredMovies = this.search(moviesList, searchQuery);
+      sortedMovies = [...filteredMovies];
     }
 
-    const filteredMovies = this.search(moviesList, searchQuery);
-    const sortedMovies = [...filteredMovies];
-
-    if (sortType) {
+    if (moviesList && sortType) {
       sortedMovies.sort((a, b) => this.compareProperties(sortType, a, b, sortByAscend));
     }
 
-    return (
+    return moviesList ? (
       <div className={styles.moviesContainer}>
         {sortedMovies.map((movie) => (
           <div key={movie.id} className={styles.movie}>
@@ -81,7 +86,9 @@ class MoviesListRoot extends Component {
           </div>
         ))}
       </div>
-    );
+    ) : (
+        <h1>{translatedWords['app-loading-text']}</h1>
+      );
   }
 }
 
@@ -102,7 +109,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = {
   fetchMovies,
   moviesResetToDefault,
-}
+};
 
 const withConnect = connect(
   mapStateToProps,
@@ -117,10 +124,11 @@ MoviesListRoot.propTypes = {
   moviesList: PropTypes.arrayOf(
     PropTypes.shape({
       ...movieShortInfo,
-      ...movieAdirionalInfo,
-    })
+      ...movieAditionalInfo,
+    }),
   ),
   searchQuery: PropTypes.string,
   sortType: PropTypes.string,
   sortByAscend: PropTypes.bool,
+  translatedWords: translatedWordsProp,
 };

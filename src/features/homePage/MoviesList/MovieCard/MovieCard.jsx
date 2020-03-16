@@ -8,21 +8,16 @@ import { updateMovieById } from '../../actions';
 
 import styles from './MovieCard.module.scss';
 
-const MovieCardRoot = (props) => {
-  const { updateMovieById } = props;
-  const movie = props.movie;
-
+const MovieCardRoot = ({ updateMovieById, movie }) => {
   const {
     id,
     title,
     posterUrl,
     likes,
-  } = props.movie;
+  } = movie;
 
   const onLikesClick = (value) => {
-    const { movie } = props;
-    const previousLikes = props.movie.likes;
-    const id = props.movie.id;
+    const { likes: previousLikes, id } = movie;
 
     const updatedMovie = {
       ...movie,

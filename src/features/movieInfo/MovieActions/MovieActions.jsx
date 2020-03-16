@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 import { withTranslation } from '../../../hocs/withTranslation';
 import { Routes } from '../../AppRoutes/AppRoutes.constants';
 import { deleteMovieById } from '../../homePage/actions';
+import { translatedWordsProp } from '../../../propTypes';
 
 import styles from './MovieActions.module.scss';
 
@@ -41,7 +42,7 @@ class MovieActionsRoot extends Component {
       </div>
     );
   }
-};
+}
 
 const mapDispatchToProps = {
   deleteMovieById,
@@ -59,8 +60,9 @@ export const MovieActions = compose(
 )(MovieActionsRoot);
 
 MovieActionsRoot.propTypes = {
-  id: PropTypes.number,
-  onDelete: PropTypes.func,
+  id: PropTypes.number.isRequired,
+  translatedWords: translatedWordsProp,
+  deleteMovieById: PropTypes.func.isRequired,
   history: PropTypes.shape({
     push: PropTypes.func,
   }),

@@ -65,11 +65,7 @@ class ActorInfoRoot extends Component {
   render() {
     const { translatedWords, currentActor } = this.props;
 
-    if (!currentActor) {
-      return <h1>{translatedWords['app-loading-text']}</h1>;
-    }
-
-    return (
+    return currentActor ? (
       <div className={styles.container}>
         <div className={styles.content}>
           <Header title={translatedWords['app-actorinfo-title']} />
@@ -77,7 +73,9 @@ class ActorInfoRoot extends Component {
         </div>
         <Footer />
       </div>
-    );
+    ) : (
+        <h1>{translatedWords['app-loading-text']}</h1>
+      );
   }
 }
 

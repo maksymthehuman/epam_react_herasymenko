@@ -9,7 +9,11 @@ import { Routes } from '../AppRoutes/AppRoutes.constants';
 import { Header } from '../../components/Header';
 import { Footer } from '../../components/Footer';
 import { fetchMovieById, updateCurrentMovieById, currentMovieReset } from '../homePage/actions';
-import { movieShortInfo } from '../../propTypes';
+import {
+  movieShortInfo,
+  movieAditionalInfo,
+  translatedWordsProp,
+} from '../../propTypes';
 
 import styles from './MovieEdit.module.scss';
 
@@ -66,15 +70,18 @@ class MovieEditRoot extends Component {
 
   render() {
     const { translatedWords, currentMovie } = this.props;
+    const {
+      id,
+      title,
+      posterUrl,
+      director,
+      genres: genresArray,
+      description,
+    } = currentMovie || {};
 
-    if (!currentMovie) {
-      return <h1>{translatedWords['app-loading-text']}</h1>
-    }
+    const genres = currentMovie ? genresArray.join(', ') : '';
 
-    const { id, title, posterUrl, description, director } = currentMovie;
-    const genres = currentMovie.genres.join(', ');
-
-    return (
+    return currentMovie ? (
       <div className={styles.container}>
         <div className={styles.content}>
           <Header title={translatedWords['app-movieedit-title']} />
@@ -160,9 +167,11 @@ class MovieEditRoot extends Component {
         </div>
         <Footer />
       </div>
-    );
+    ) : (
+        <h1>{translatedWords['app-loading-text']}</h1>
+      );
   }
-};
+}
 
 const mapStateToProps = ({ moviesReducer: { currentMovie } }) => ({
   currentMovie,
@@ -186,12 +195,14 @@ export const MovieEdit = compose(
 )(MovieEditRoot);
 
 MovieEditRoot.propTypes = {
-  sortedMovies: PropTypes.arrayOf(
-    PropTypes.shape({
-      ...movieShortInfo,
-    }),
-  ),
-  onEdit: PropTypes.func,
+  fetchMovieById: PropTypes.func.isRequired,
+  updateCurrentMovieById: PropTypes.func.isRequired,
+  currentMovieReset: PropTypes.func.isRequired,
+  currentMovie: PropTypes.shape({
+    ...movieShortInfo,
+    ...movieAditionalInfo,
+  }),
+  translatedWords: translatedWordsProp,
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,

@@ -8,6 +8,8 @@ import {
   CURRENT_MOVIES_UPDATED,
 } from './types';
 
+import { API_URLs } from '../../constants';
+
 export const currentMovieReset = () => ({
   type: MOVIE_RESET,
 });
@@ -41,30 +43,44 @@ const currentMovieUpdated = (updatedMovie) => ({
 });
 
 export const fetchMovies = () => (dispatch, _, api) => {
-  api('movies')
+  api(API_URLs.MOVIES)
     .then(({ data }) => {
       dispatch(moviesLoaded(data));
-    });
+    })
+    .catch((error) => console.warn(error));
 };
 
 export const fetchMovieById = (id) => (dispatch, _, api) => {
-  api(`movies/${id}`)
+  api(`${API_URLs.MOVIES}/${id}`)
     .then(({ data }) => {
       dispatch(currentMovieLoaded(data));
-    });
+    })
+    .catch((error) => console.warn(error));
 };
 
 export const deleteMovieById = (id) => async (dispatch, _, api) => {
-  await api(`movies/${id}`, 'delete');
-  dispatch(currentMovieReset());
+  try {
+    await api(`${API_URLs.MOVIES}/${id}`, 'delete');
+    dispatch(currentMovieReset());
+  } catch (error) {
+    console.warn(error);
+  }
 };
 
 export const updateMovieById = (id, movie) => async (dispatch, _, api) => {
-  const response = await api(`movies/${id}`, 'put', movie);
-  dispatch(movieUpdated(response.data));
+  try {
+    const response = await api(`${API_URLs.MOVIES}/${id}`, 'put', movie);
+    dispatch(movieUpdated(response.data));
+  } catch (error) {
+    console.warn(error);
+  }
 };
 
 export const updateCurrentMovieById = (id, movie) => async (dispatch, _, api) => {
-  const response = await api(`movies/${id}`, 'put', movie);
-  dispatch(currentMovieUpdated(response.data));
+  try {
+    const response = await api(`${API_URLs.MOVIES}/${id}`, 'put', movie);
+    dispatch(currentMovieUpdated(response.data));
+  } catch (error) {
+    console.warn(error);
+  }
 };

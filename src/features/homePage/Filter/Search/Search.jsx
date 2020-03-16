@@ -1,44 +1,44 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
-import { withTranslation } from '../../../../hocs/withTranslation'
+import { PropTypes } from 'prop-types';
+import { withTranslation } from '../../../../hocs/withTranslation';
 import { searchApdate } from '../actions';
+import { translatedWordsProp } from '../../../../propTypes';
 
 import styles from './Search.module.scss';
 
 const words = ['app-filter-search-placeholder'];
 
-class SearchRoot extends Component {
-  onSubmit = (event) => {
+const SearchRoot = ({
+  searchApdate,
+  translatedWords,
+  searchQuery,
+}) => {
+  const onSubmit = (event) => {
     event.preventDefault();
 
-    const { searchApdate } = this.props;
-
-    const searchQuery = event.target.searchField.value;
+    const { value: searchQuery } = event.target.searchField;
     const trimmedQuery = searchQuery.trim();
 
     searchApdate(trimmedQuery);
   };
 
-  render() {
-    const { translatedWords, searchQuery } = this.props;
-
-    return (
-      <form
-        className={styles.search}
-        onSubmit={this.onSubmit}>
-        <button className={styles.searchButton}>
-          <span className={`fa fa-search ${styles.searchIcon}`}></span>
-        </button>
-        <input
-          className={styles.searchField}
-          type="search"
-          placeholder={translatedWords['app-filter-search-placeholder']}
-          name="searchField"
-          defaultValue={searchQuery} />
-      </form>
-    );
-  }
-}
+  return (
+    <form
+      className={styles.search}
+      onSubmit={onSubmit}>
+      <button className={styles.searchButton}>
+        <span className={`fa fa-search ${styles.searchIcon}`}></span>
+      </button>
+      <input
+        className={styles.searchField}
+        type="search"
+        placeholder={translatedWords['app-filter-search-placeholder']}
+        name="searchField"
+        defaultValue={searchQuery} />
+    </form>
+  );
+};
 
 const mapStateToProps = ({ filterReducer: { searchQuery } }) => ({
   searchQuery,
@@ -54,3 +54,9 @@ const withConnect = connect(
 );
 
 export const Search = withTranslation(words)(withConnect(SearchRoot));
+
+SearchRoot.propTypes = {
+  searchApdate: PropTypes.func.isRequired,
+  searchQuery: PropTypes.string,
+  translatedWords: translatedWordsProp,
+};

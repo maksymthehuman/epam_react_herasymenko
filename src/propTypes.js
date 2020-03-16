@@ -1,4 +1,4 @@
-import { PropTypes } from "prop-types";
+import PropTypes from 'prop-types';
 
 export const movieShortInfo = {
   id: PropTypes.number.isRequired,
@@ -8,7 +8,7 @@ export const movieShortInfo = {
   likes: PropTypes.number.isRequired,
 };
 
-export const movieAdirionalInfo = {
+export const movieAditionalInfo = {
   director: PropTypes.string.isRequired,
   actorsIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   genres: PropTypes.arrayOf(PropTypes.string).isRequired,
