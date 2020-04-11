@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { WORDS } from './MovieInfo.constants';
 import { translatedWordsProp } from '../../propTypes';
 import { withTranslation } from '../../hocs/withTranslation';
 import { RatingStars } from '../../components/RatingStars';
@@ -17,15 +18,7 @@ import {
 
 import styles from './MovieInfo.module.scss';
 
-const words = [
-  'app-loading-text',
-  'app-movieinfo-title',
-  'app-movieinfo-likes',
-  'app-movieinfo-director',
-  'app-movieinfo-actors',
-  'app-movieinfo-genres',
-  'app-movieinfo-description',
-];
+const wordsToTranslate = Object.values(WORDS);
 
 const concatenateTextArray = (textArray) => textArray.join(', ');
 
@@ -48,7 +41,7 @@ const movieDetails = (translatedWords, currentMovie, actors, handleStarClick) =>
       <div className={styles.aside}>
         <div className={styles.shortInfo}>
           <h3 className={styles.title}>{title}</h3>
-          <p className={styles.likes}>{translatedWords['app-movieinfo-likes']}{likes}</p>
+          <p className={styles.likes}>{translatedWords[WORDS.TEXT_LIKES]}{likes}</p>
           <RatingStars
             movie={currentMovie}
             handleStarClick={handleStarClick} />
@@ -65,13 +58,13 @@ const movieDetails = (translatedWords, currentMovie, actors, handleStarClick) =>
         <div>
           <p className={styles.text}>
             <span className={styles.paragraph}>
-              {translatedWords['app-movieinfo-director']}
+              {translatedWords[WORDS.TEXT_DIRECTOR]}
             </span>
             {director}
           </p>
           <p className={styles.text}>
             <span className={styles.paragraph}>
-              {translatedWords['app-movieinfo-actors']}
+              {translatedWords[WORDS.TEXT_ACTORS]}
             </span>
             {currentActors.map(({ id, name }, index) => (
               <span key={id}>
@@ -84,13 +77,13 @@ const movieDetails = (translatedWords, currentMovie, actors, handleStarClick) =>
           </p>
           <p className={styles.text}>
             <span className={styles.paragraph}>
-              {translatedWords['app-movieinfo-genres']}
+              {translatedWords[WORDS.TEXT_GENRES]}
             </span>
             {concatenateTextArray(genres)}
           </p>
           <p className={styles.text}>
             <span className={styles.paragraph}>
-              {translatedWords['app-movieinfo-description']}
+              {translatedWords[WORDS.TEXT_DESCRIPTION]}
             </span>
             {description}
           </p>
@@ -127,13 +120,13 @@ class MovieInfoRoot extends Component {
     return currentMovie && actors ? (
       <div className={styles.container}>
         <div className={styles.content}>
-          <Header title={translatedWords['app-movieinfo-title']} />
+          <Header title={translatedWords[WORDS.TITLE]} />
           {movieDetails(translatedWords, currentMovie, actors, updateCurrentMovieById)}
         </div>
         <Footer />
       </div>
     ) : (
-        <h1>{translatedWords['app-loading-text']}</h1>
+        <h1>{translatedWords[WORDS.TEXT_LOADING]}</h1>
       );
   }
 }
@@ -159,7 +152,7 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export const MovieInfo = withTranslation(words)(withConnect(MovieInfoRoot));
+export const MovieInfo = withTranslation(wordsToTranslate)(withConnect(MovieInfoRoot));
 
 movieDetails.propTypes = {
   translatedWords: translatedWordsProp,

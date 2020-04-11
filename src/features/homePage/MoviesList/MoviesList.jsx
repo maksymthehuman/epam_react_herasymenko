@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { WORDS } from './MoviesList.constants';
 import { withTranslation } from '../../../hocs/withTranslation';
 import { fetchMovies, moviesResetToDefault } from '../actions';
 import { MovieCard } from './MovieCard';
@@ -12,7 +13,7 @@ import {
 
 import styles from './MoviesList.module.scss';
 
-const words = ['app-loading-text'];
+const wordsToTranslate = Object.values(WORDS);
 
 class MoviesListRoot extends Component {
   componentDidMount() {
@@ -87,7 +88,7 @@ class MoviesListRoot extends Component {
         ))}
       </div>
     ) : (
-        <h1>{translatedWords['app-loading-text']}</h1>
+        <h1>{translatedWords[WORDS.TEXT_LOADING]}</h1>
       );
   }
 }
@@ -116,7 +117,7 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export const MoviesList = withTranslation(words)(withConnect(MoviesListRoot));
+export const MoviesList = withTranslation(wordsToTranslate)(withConnect(MoviesListRoot));
 
 MoviesListRoot.propTypes = {
   fetchMovies: PropTypes.func.isRequired,

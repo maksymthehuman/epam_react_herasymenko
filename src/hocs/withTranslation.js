@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Languages } from '../constants';
+import { LANGUAGES } from '../constants';
 import { getLanguage } from '../components/LanguagesList/actions';
 import englishWords from '../internalize/eng';
 import ukrainianWords from '../internalize/ukr';
@@ -10,10 +10,10 @@ export const withTranslation = (words = []) => (WrappedComponent) => {
   function getCurrentLanguageWords(currentLanguage) {
     switch (currentLanguage) {
 
-      case Languages.ENG:
+      case LANGUAGES.ENG:
         return englishWords;
 
-      case Languages.UKR:
+      case LANGUAGES.UKR:
         return ukrainianWords;
 
       default:

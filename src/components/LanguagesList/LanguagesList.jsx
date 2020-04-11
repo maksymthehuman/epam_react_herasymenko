@@ -1,42 +1,39 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { translatedWordsProp } from '../../propTypes';
 import cx from 'classnames';
+import { WORDS } from './LanguagesList.constants';
+import { translatedWordsProp } from '../../propTypes';
 import { withTranslation } from '../../hocs/withTranslation';
 import { setLanguage } from './actions';
-import { Languages } from '../../constants';
+import { LANGUAGES } from '../../constants';
 
 import styles from './LanguagesList.module.scss';
 
-const words = [
-  'app-languages-text',
-  'app-languages-ukr',
-  'app-languages-eng',
-];
+const wordsToTranslate = Object.values(WORDS);
 
 const LanguagesListRoot = ({ setLanguage, language, translatedWords }) => {
   return (
     <div className={styles.langContainer}>
       <p className={styles.langText}>
-        {translatedWords['app-languages-text']}
+        {translatedWords[WORDS.TEXT_LANGUAGE]}
       </p>
       <ul className={styles.langList}>
         <li
           className={cx(
             styles.langListItem,
-            language === Languages.UKR && styles.langListItemActive,
+            language === LANGUAGES.UKR && styles.langListItemActive,
           )}
-          onClick={() => setLanguage(Languages.UKR)}>
-          {translatedWords['app-languages-ukr']}
+          onClick={() => setLanguage(LANGUAGES.UKR)}>
+          {translatedWords[WORDS.LANGUAGE_UKR]}
         </li>
         <li
           className={cx(
             styles.langListItem,
-            language === Languages.ENG && styles.langListItemActive,
+            language === LANGUAGES.ENG && styles.langListItemActive,
           )}
-          onClick={() => setLanguage(Languages.ENG)}>
-          {translatedWords['app-languages-eng']}
+          onClick={() => setLanguage(LANGUAGES.ENG)}>
+          {translatedWords[WORDS.LANGUAGE_ENG]}
         </li>
       </ul>
     </div>
@@ -56,7 +53,7 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export const LanguagesList = withTranslation(words)(withConnect(LanguagesListRoot));
+export const LanguagesList = withTranslation(wordsToTranslate)(withConnect(LanguagesListRoot));
 
 LanguagesListRoot.propTypes = {
   translatedWords: translatedWordsProp,

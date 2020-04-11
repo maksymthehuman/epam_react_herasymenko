@@ -1,4 +1,5 @@
 import React from 'react';
+import { WORDS } from './HomePage.constants';
 import { translatedWordsProp } from '../../propTypes';
 import { Filter } from './Filter';
 import { MoviesList } from './MoviesList';
@@ -8,13 +9,13 @@ import { Footer } from '../../components/Footer';
 
 import styles from './HomePage.module.scss';
 
-const words = ['app-homepage-title'];
+const wordsToTranslate = Object.values(WORDS);
 
 const HomePageRoot = ({ translatedWords }) => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <Header title={translatedWords['app-homepage-title']} />
+        <Header title={translatedWords[WORDS.TITLE]} />
         <main className={styles.contentContainer}>
           <div className={styles.mainContent}>
             <Filter />
@@ -27,7 +28,7 @@ const HomePageRoot = ({ translatedWords }) => {
   );
 };
 
-export const HomePage = withTranslation(words)(HomePageRoot);
+export const HomePage = withTranslation(wordsToTranslate)(HomePageRoot);
 
 HomePageRoot.propTypes = {
   translatedWords: translatedWordsProp,

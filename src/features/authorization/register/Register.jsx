@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { WORDS } from './Register.constants';
 import { withTranslation } from '../../../hocs/withTranslation';
 import { fetchUsers, registerUser } from '../actions';
 import { Routes } from '../../AppRoutes/AppRoutes.constants';
@@ -10,16 +11,7 @@ import { translatedWordsProp } from '../../../propTypes';
 
 import styles from './Register.module.scss';
 
-const words = [
-  'app-title',
-  'app-register-title',
-  'app-register-form-login-placeholder',
-  'app-register-form-password-placeholder',
-  'app-register-form-button-submit',
-  'app-register-have-account',
-  'app-register-link-to-login',
-  'app-register-message-busy-login',
-];
+const wordsToTranslate = Object.values(WORDS);
 
 class RegisterRoot extends Component {
   state = {
@@ -47,7 +39,7 @@ class RegisterRoot extends Component {
 
     if (this.isUserExist(users, userName.value)) {
       this.setState({
-        warningMessage: translatedWords['app-register-message-busy-login'],
+        warningMessage: translatedWords[WORDS.TEXT_BUSY_LOGIN],
       });
     } else {
       registerUser(userData);
@@ -62,9 +54,9 @@ class RegisterRoot extends Component {
 
     return (
       <div className={styles.contentContainer}>
-        <h1 className={styles.title}>{translatedWords['app-title']}</h1>
+        <h1 className={styles.title}>{translatedWords[WORDS.APP_TITLE]}</h1>
         <div className={styles.container}>
-          <h2 className={styles.formTitle}>{translatedWords['app-register-title']}</h2>
+          <h2 className={styles.formTitle}>{translatedWords[WORDS.TITLE]}</h2>
           <form
             className={styles.signIn}
             onSubmit={this.submitRegister}>
@@ -72,25 +64,25 @@ class RegisterRoot extends Component {
               className={styles.inputField}
               name="userName"
               type="text"
-              placeholder={translatedWords['app-register-form-login-placeholder']}
+              placeholder={translatedWords[WORDS.PLACEHOLDER_LOGIN]}
               required />
             <input
               className={styles.inputField}
               name="password"
               type="password"
-              placeholder={translatedWords['app-register-form-password-placeholder']}
+              placeholder={translatedWords[WORDS.PLACEHOLDER_PASSWORD]}
               required />
             {warningMessage ?
               <p className={styles.warning}>{warningMessage}</p> :
               null
             }
             <button className={styles.submit}>
-              {translatedWords['app-register-form-button-submit']}
+              {translatedWords[WORDS.BUTTON_SUBMIT]}
             </button>
             <span>
-              {translatedWords['app-register-have-account']}
+              {translatedWords[WORDS.TEXT_HAVE_ACCOUNT]}
               <Link to={Routes.LOGIN}>
-                {translatedWords['app-register-link-to-login']}
+                {translatedWords[WORDS.TEXT_LOGIN_LINK]}
               </Link>
             </span>
           </form>
@@ -115,7 +107,7 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export const Register = withTranslation(words)(withConnect(RegisterRoot));
+export const Register = withTranslation(wordsToTranslate)(withConnect(RegisterRoot));
 
 RegisterRoot.propTypes = {
   fetchUsers: PropTypes.func.isRequired,

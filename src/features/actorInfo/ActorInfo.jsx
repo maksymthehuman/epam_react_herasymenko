@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { compose } from 'redux';
-import PropTypes from 'prop-types';
-import { translatedWordsProp } from '../../propTypes';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { WORDS } from './ActorInfo.constants';
+import { translatedWordsProp } from '../../propTypes';
 import { withTranslation } from '../../hocs/withTranslation';
 import { fetchActorById, currentActorReset } from './actions';
 import { Header } from '../../components/Header';
@@ -11,12 +12,7 @@ import { Footer } from '../../components/Footer';
 
 import styles from './ActorInfo.module.scss';
 
-const words = [
-  'app-loading-text',
-  'app-actorinfo-title',
-  'app-actorinfo-name',
-  'app-actorinfo-biography',
-];
+const wordsToTranslate = Object.values(WORDS);
 
 const actorDetails = (
   translatedWords,
@@ -33,13 +29,13 @@ const actorDetails = (
         <div className={styles.textContent}>
           <p className={styles.text}>
             <span className={styles.paragraph}>
-              {translatedWords['app-actorinfo-name']}
+              {translatedWords[WORDS.TEXT_NAME]}
             </span>
             {name}
           </p>
           <p className={styles.text}>
             <span className={styles.paragraph}>
-              {translatedWords['app-actorinfo-biography']}
+              {translatedWords[WORDS.TEXT_BIOGRAPHY]}
             </span>
             {biography}
           </p>
@@ -68,13 +64,13 @@ class ActorInfoRoot extends Component {
     return currentActor ? (
       <div className={styles.container}>
         <div className={styles.content}>
-          <Header title={translatedWords['app-actorinfo-title']} />
+          <Header title={translatedWords[WORDS.TITLE]} />
           {actorDetails(translatedWords, currentActor)}
         </div>
         <Footer />
       </div>
     ) : (
-        <h1>{translatedWords['app-loading-text']}</h1>
+        <h1>{translatedWords[WORDS.TEXT_LOADING]}</h1>
       );
   }
 }
@@ -94,7 +90,7 @@ const withConnect = connect(
 );
 
 export const ActorInfo = compose(
-  withTranslation(words),
+  withTranslation(wordsToTranslate),
   withRouter,
   withConnect,
 )(ActorInfoRoot);

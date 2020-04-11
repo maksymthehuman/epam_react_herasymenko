@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Form, Field } from 'react-final-form';
 import PropTypes from 'prop-types';
+import { WORDS } from './MovieEdit.constants';
 import { withTranslation } from '../../hocs/withTranslation';
 import { Routes } from '../AppRoutes/AppRoutes.constants';
 import { Header } from '../../components/Header';
@@ -17,18 +18,7 @@ import {
 
 import styles from './MovieEdit.module.scss';
 
-const words = [
-  'app-loading-text',
-  'app-movieedit-title',
-  'app-movieedit-form-label-title',
-  'app-movieedit-form-label-image-url',
-  'app-movieedit-form-label-director',
-  'app-movieedit-form-label-genres',
-  'app-movieedit-form-label-genres-tip',
-  'app-movieedit-form-label-description',
-  'app-movieedit-form-button-submit',
-  'app-movieedit-form-button-back',
-];
+const wordsToTranslate = Object.values(WORDS);
 
 class MovieEditRoot extends Component {
   componentDidMount() {
@@ -84,7 +74,7 @@ class MovieEditRoot extends Component {
     return currentMovie ? (
       <div className={styles.container}>
         <div className={styles.content}>
-          <Header title={translatedWords['app-movieedit-title']} />
+          <Header title={translatedWords[WORDS.TITLE]} />
           <Form
             initialValues={{ title, posterUrl, director, genres, description }}
             onSubmit={this.submitEditedMovie}
@@ -94,7 +84,7 @@ class MovieEditRoot extends Component {
                 onSubmit={handleSubmit}>
                 <div className={styles.inputGroup}>
                   <label className={styles.description} htmlFor="title">
-                    {translatedWords['app-movieedit-form-label-title']}
+                    {translatedWords[WORDS.LABEL_TITLE]}
                   </label>
                   <Field
                     className={styles.inputField}
@@ -105,7 +95,7 @@ class MovieEditRoot extends Component {
                 </div>
                 <div className={styles.inputGroup}>
                   <label className={styles.description} htmlFor="posterUrl">
-                    {translatedWords['app-movieedit-form-label-image-url']}
+                    {translatedWords[WORDS.LABEL_IMAGE_URL]}
                   </label>
                   <Field
                     className={styles.inputField}
@@ -116,7 +106,7 @@ class MovieEditRoot extends Component {
                 </div>
                 <div className={styles.inputGroup}>
                   <label className={styles.description} htmlFor="director">
-                    {translatedWords['app-movieedit-form-label-director']}
+                    {translatedWords[WORDS.LABEL_DIRECTOR]}
                   </label>
                   <Field
                     className={styles.inputField}
@@ -127,19 +117,19 @@ class MovieEditRoot extends Component {
                 </div>
                 <div className={styles.inputGroup}>
                   <label className={styles.description} htmlFor="genres">
-                    {translatedWords['app-movieedit-form-label-genres']}
+                    {translatedWords[WORDS.LABEL_GENRES]}
                   </label>
                   <Field
                     className={styles.inputField}
                     id="genres"
                     name="genres"
-                    title={translatedWords['app-movieedit-form-label-genres-tip']}
+                    title={translatedWords[WORDS.LABEL_GENRES_TIP]}
                     component="input"
                     required />
                 </div>
                 <div className={styles.inputGroup}>
                   <label className={styles.description} htmlFor="description">
-                    {translatedWords['app-movieedit-form-label-description']}
+                    {translatedWords[WORDS.LABEL_DESCRIPTION]}
                   </label>
                   <Field
                     className={styles.inputFieldLarge}
@@ -152,13 +142,13 @@ class MovieEditRoot extends Component {
                   <button
                     className={styles.actionButton}
                     type="submit">
-                    {translatedWords['app-movieedit-form-button-submit']}
+                    {translatedWords[WORDS.BUTTON_SUBMIT]}
                   </button>
                   <button
                     className={styles.actionButton}
                     type="button"
                     onClick={() => this.props.history.push(`${Routes.MOVIEINFO}/${id}`)}>
-                    {translatedWords['app-movieedit-form-button-back']}
+                    {translatedWords[WORDS.BUTTON_BACK]}
                   </button>
                 </div>
               </form>
@@ -168,7 +158,7 @@ class MovieEditRoot extends Component {
         <Footer />
       </div>
     ) : (
-        <h1>{translatedWords['app-loading-text']}</h1>
+        <h1>{translatedWords[WORDS.TEXT_LOADING]}</h1>
       );
   }
 }
@@ -189,7 +179,7 @@ const withConnect = connect(
 );
 
 export const MovieEdit = compose(
-  withTranslation(words),
+  withTranslation(wordsToTranslate),
   withRouter,
   withConnect,
 )(MovieEditRoot);

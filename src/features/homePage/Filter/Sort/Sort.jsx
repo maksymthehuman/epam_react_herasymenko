@@ -1,19 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { translatedWordsProp } from '../../../../propTypes';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
+import { SORT_TYPES, WORDS } from './Sort.constants';
+import { translatedWordsProp } from '../../../../propTypes';
 import { withTranslation } from '../../../../hocs/withTranslation';
 import { sortApdate, sortReset } from '../actions';
-import { SortTypes } from './constants';
 
 import styles from './Sort.module.scss';
 
-const words = [
-  'app-filter-sort-likes',
-  'app-filter-sort-rating',
-  'app-filter-sort-reset',
-];
+const wordsToTranslate = Object.values(WORDS);
 
 const setIconClass = (currentSortType, direction, sortType) => {
   if (currentSortType === sortType) {
@@ -35,33 +31,33 @@ const SortRoot = (props) => {
   const sortLikesIconClass = classNames(
     styles.sortIcon,
     'fa',
-    setIconClass(sortType, sortByAscend, SortTypes.LIKES),
+    setIconClass(sortType, sortByAscend, SORT_TYPES.LIKES),
   );
 
   const sortStarsIconClass = classNames(
     styles.sortIcon,
     'fa',
-    setIconClass(sortType, sortByAscend, SortTypes.STARS),
+    setIconClass(sortType, sortByAscend, SORT_TYPES.STARS),
   );
 
   return (
     <div className={styles.filter}>
       <button
         className={styles.sortButton}
-        onClick={() => sortApdate(SortTypes.LIKES)}>
-        {translatedWords['app-filter-sort-likes']}
+        onClick={() => sortApdate(SORT_TYPES.LIKES)}>
+        {translatedWords[WORDS.BUTTON_LIKES]}
         <span className={sortLikesIconClass}></span>
       </button>
       <button
         className={styles.sortButton}
-        onClick={() => sortApdate(SortTypes.STARS)}>
-        {translatedWords['app-filter-sort-rating']}
+        onClick={() => sortApdate(SORT_TYPES.STARS)}>
+        {translatedWords[WORDS.BUTTON_RATING]}
         <span className={sortStarsIconClass}></span>
       </button>
       <button
         className={styles.sortButton}
         onClick={sortReset}>
-        {translatedWords['app-filter-sort-reset']}
+        {translatedWords[WORDS.BUTTON_RESET]}
       </button>
     </div>
   );
@@ -82,7 +78,7 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export const Sort = withTranslation(words)(withConnect(SortRoot));
+export const Sort = withTranslation(wordsToTranslate)(withConnect(SortRoot));
 
 SortRoot.propTypes = {
   translatedWords: translatedWordsProp,

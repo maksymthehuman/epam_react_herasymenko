@@ -3,6 +3,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { WORDS } from './MovieActions.constants';
 import { withTranslation } from '../../../hocs/withTranslation';
 import { Routes } from '../../AppRoutes/AppRoutes.constants';
 import { deleteMovieById } from '../../homePage/actions';
@@ -10,10 +11,7 @@ import { translatedWordsProp } from '../../../propTypes';
 
 import styles from './MovieActions.module.scss';
 
-const words = [
-  'app-movieinfo-button-edit',
-  'app-movieinfo-button-delete',
-];
+const wordsToTranslate = Object.values(WORDS);
 
 class MovieActionsRoot extends Component {
   handleDelete = async () => {
@@ -32,12 +30,12 @@ class MovieActionsRoot extends Component {
         <button
           className={styles.movieAction}
           onClick={() => this.props.history.push(`${Routes.MOVIEEDIT}/${id}`)}>
-          {translatedWords['app-movieinfo-button-edit']}
+          {translatedWords[WORDS.BUTTON_EDIT]}
         </button>
         <button
           className={styles.movieAction}
           onClick={this.handleDelete}>
-          {translatedWords['app-movieinfo-button-delete']}
+          {translatedWords[WORDS.BUTTON_DELETE]}
         </button>
       </div>
     );
@@ -54,7 +52,7 @@ const withConnect = connect(
 );
 
 export const MovieActions = compose(
-  withTranslation(words),
+  withTranslation(wordsToTranslate),
   withRouter,
   withConnect,
 )(MovieActionsRoot);

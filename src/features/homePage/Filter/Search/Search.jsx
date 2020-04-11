@@ -1,13 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { PropTypes } from 'prop-types';
+import { WORDS } from './Search.constants';
 import { withTranslation } from '../../../../hocs/withTranslation';
 import { searchApdate } from '../actions';
 import { translatedWordsProp } from '../../../../propTypes';
 
 import styles from './Search.module.scss';
 
-const words = ['app-filter-search-placeholder'];
+const wordsToTranslate = Object.values(WORDS);
 
 const SearchRoot = ({
   searchApdate,
@@ -33,7 +34,7 @@ const SearchRoot = ({
       <input
         className={styles.searchField}
         type="search"
-        placeholder={translatedWords['app-filter-search-placeholder']}
+        placeholder={translatedWords[WORDS.PLACEHOLDER_SEARCH]}
         name="searchField"
         defaultValue={searchQuery} />
     </form>
@@ -53,7 +54,7 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export const Search = withTranslation(words)(withConnect(SearchRoot));
+export const Search = withTranslation(wordsToTranslate)(withConnect(SearchRoot));
 
 SearchRoot.propTypes = {
   searchApdate: PropTypes.func.isRequired,

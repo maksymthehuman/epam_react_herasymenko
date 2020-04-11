@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { WORDS } from './Login.constants';
 import { withTranslation } from '../../../hocs/withTranslation';
 import { userLogin, verifyUser, userStatusReset } from '../actions';
 import { Routes } from '../../AppRoutes/AppRoutes.constants';
@@ -10,16 +11,7 @@ import { translatedWordsProp } from '../../../propTypes';
 
 import styles from './Login.module.scss';
 
-const words = [
-  'app-title',
-  'app-login-title',
-  'app-login-form-login-placeholder',
-  'app-login-form-password-placeholder',
-  'app-login-form-button-submit',
-  'app-login-dont-have-account',
-  'app-login-link-to-register',
-  'app-login-message-wrong-user',
-];
+const wordsToTranslate = Object.values(WORDS);
 
 class LoginRoot extends Component {
   shouldComponentUpdate(nextProps) {
@@ -52,9 +44,9 @@ class LoginRoot extends Component {
 
     return (
       <div className={styles.contentContainer}>
-        <h1 className={styles.title}>{translatedWords['app-title']}</h1>
+        <h1 className={styles.title}>{translatedWords[WORDS.APP_TITLE]}</h1>
         <div className={styles.container}>
-          <h2 className={styles.formTitle}>{translatedWords['app-login-title']}</h2>
+          <h2 className={styles.formTitle}>{translatedWords[WORDS.TITLE]}</h2>
           <form
             className={styles.signIn}
             onSubmit={this.submitLogin}>
@@ -62,23 +54,23 @@ class LoginRoot extends Component {
               className={styles.inputField}
               name="userName"
               type="text"
-              placeholder={translatedWords['app-login-form-login-placeholder']}
+              placeholder={translatedWords[WORDS.PLACEHOLDER_LOGIN]}
               required />
             <input
               className={styles.inputField}
               name="password"
               type="password"
-              placeholder={translatedWords['app-login-form-password-placeholder']}
+              placeholder={translatedWords[WORDS.PLACEHOLDER_PASSWORD]}
               required />
             {wrongUserData ?
-              <p className={styles.warning}>{translatedWords['app-login-message-wrong-user']}</p> :
+              <p className={styles.warning}>{translatedWords[WORDS.TEXT_WRONG_USER]}</p> :
               null
             }
-            <button className={styles.submit}>{translatedWords['app-login-form-button-submit']}</button>
+            <button className={styles.submit}>{translatedWords[WORDS.BUTTON_SUBMIT]}</button>
             <span>
-              {translatedWords['app-login-dont-have-account']}
+              {translatedWords[WORDS.TEXT_NO_ACCOUNT]}
               <Link to={Routes.REGISTER}>
-                {translatedWords['app-login-link-to-register']}
+                {translatedWords[WORDS.TEXT_REGISTER_LINK]}
               </Link>
             </span>
           </form>
@@ -105,7 +97,7 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export const Login = withTranslation(words)(withConnect(LoginRoot));
+export const Login = withTranslation(wordsToTranslate)(withConnect(LoginRoot));
 
 LoginRoot.propTypes = {
   onLogin: PropTypes.func.isRequired,

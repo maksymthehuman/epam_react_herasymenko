@@ -2,6 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { WORDS } from './Header.constants';
 import { translatedWordsProp } from '../../propTypes';
 import { withTranslation } from '../../hocs/withTranslation';
 import { userLogout } from '../../features/authorization/actions';
@@ -10,10 +11,7 @@ import { LanguagesList } from '../LanguagesList';
 
 import styles from './Header.module.scss';
 
-const words = [
-  'app-header-nav-homepage',
-  'app-header-logout',
-];
+const wordsToTranslate = Object.values(WORDS);
 
 const HeaderRoot = ({ translatedWords, title, userLogout }) => {
   return (
@@ -24,7 +22,7 @@ const HeaderRoot = ({ translatedWords, title, userLogout }) => {
             to={Routes.HOMEPAGE}
             className={styles.navigationItem}
             activeClassName={styles.navigationItemActive}>
-            {translatedWords['app-header-nav-homepage']}
+            {translatedWords[WORDS.NAV_HOMEPAGE]}
           </NavLink>
         </nav>
         <LanguagesList />
@@ -32,7 +30,7 @@ const HeaderRoot = ({ translatedWords, title, userLogout }) => {
           <button
             className={styles.logout}
             onClick={userLogout}>
-            {translatedWords['app-header-logout']}
+            {translatedWords[WORDS.BUTTON_LOGOUT]}
           </button>
         </div>
       </div>
@@ -52,7 +50,7 @@ const withConnect = connect(
   mapDispatchToProps,
 );
 
-export const Header = withTranslation(words)(withConnect(HeaderRoot));
+export const Header = withTranslation(wordsToTranslate)(withConnect(HeaderRoot));
 
 HeaderRoot.propTypes = {
   translatedWords: translatedWordsProp,

@@ -1,5 +1,5 @@
 import {
-  Languages,
+  LANGUAGES,
   LOCAL_STORAGE_LANG,
 } from '../../constants';
 
@@ -32,6 +32,6 @@ function getCurrentLanguage() {
   return localStorage.getItem(LOCAL_STORAGE_LANG);
 }
 
-function setCurrentLanguage(lang = Languages.ENG) {
+function setCurrentLanguage(lang = LANGUAGES.ENG) {
   localStorage.setItem(LOCAL_STORAGE_LANG, lang);
 }
